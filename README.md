@@ -1,6 +1,6 @@
 <img src="http://wcm.io/images/favicon-16@2x.png"/> CONGA Plugin for Apache Sling
 ======
-[![Build Status](https://travis-ci.org/wcm-io-devops/wcm-io-devops-conga-sling-plugin.png?branch=master)](https://travis-ci.org/wcm-io-devops/wcm-io-devops-conga-sling-plugin)
+[![Build Status](https://travis-ci.org/wcm-io-devops/wcm-io-devops-conga-sling-plugin.png?branch=develop)](https://travis-ci.org/wcm-io-devops/wcm-io-devops-conga-sling-plugin)
 
 
 ## Overview
