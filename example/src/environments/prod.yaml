@@ -1,0 +1,11 @@
+# Defines an environment
+
+nodes:
+
+# Example node
+- node: sling-launchpad
+  # Config for all roles in this node
+  config:
+    jvm.heapspace.max: 2048m
+  roles:
+  - role: sling

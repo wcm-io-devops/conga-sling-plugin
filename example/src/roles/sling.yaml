@@ -1,0 +1,29 @@
+templateDir: sling
+
+files:
+
+# Define a single file to be generated for all role variants
+- file: sling-provisioning.txt
+  dir: osgi-config
+  template: sling-provisioning.txt.hbs
+  validators:
+  - sling-provisioning
+  # Post-processors apply further actions after generation the file
+  # In this case the provisionig file is transformed to single OSGi config files
+  postProcessors:
+  - sling-provisioning-osgiconfig
+
+
+# Defines configuration parameters and default values
+config:
+
+  jvm:
+    path: /path/to/java
+    heapspace:
+      min: 512m
+      max: 2048m
+    permgenspace:
+      max: 256m
+
+  topologyConnectors:
+    - http://localhost:8080/libs/sling/topology/connector
