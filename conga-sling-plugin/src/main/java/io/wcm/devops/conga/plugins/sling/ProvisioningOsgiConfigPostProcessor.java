@@ -25,18 +25,12 @@ import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.Dictionary;
+import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.felix.cm.file.ConfigurationHandler;
-import org.apache.sling.provisioning.model.Configuration;
-import org.apache.sling.provisioning.model.Feature;
 import org.apache.sling.provisioning.model.Model;
-import org.apache.sling.provisioning.model.RunMode;
 import org.slf4j.Logger;
-
-import com.google.common.collect.ImmutableList;
 
 /**
  * Transforms a Sling Provisioning file into OSGi configurations (ignoring all other provisioning contents).
@@ -59,7 +53,7 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
   }
 
   @Override
-  public void postProcess(File file, String charset, Logger logger) {
+  public void postProcess(File file, String charset, Map<String, Object> options, Logger logger) {
     try {
       // generate OSGi configurations
       Model model = ProvisioningUtil.getModel(file, charset);
@@ -81,44 +75,18 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
    * @throws IOException
    */
   private void generateOsgiConfigurations(Model model, File dir, Logger logger) throws IOException {
-    for (Feature feature : model.getFeatures()) {
-      for (RunMode runMode : feature.getRunModes()) {
-        for (Configuration configuration : runMode.getConfigurations()) {
-          String path = getPathForConfiguration(configuration, runMode);
-          logger.info("  Generate " + path);
+    ProvisioningUtil.visitOsgiConfigurations(model, new ConfigConsumer() {
+      @Override
+      public void accept(String path, Dictionary<String, Object> properties) throws IOException {
+        logger.info("  Generate " + path);
 
-          File confFile = new File(dir, path);
-          confFile.getParentFile().mkdirs();
-          try (FileOutputStream os = new FileOutputStream(confFile)) {
-            ConfigurationHandler.write(os, configuration.getProperties());
-          }
+        File confFile = new File(dir, path);
+        confFile.getParentFile().mkdirs();
+        try (FileOutputStream os = new FileOutputStream(confFile)) {
+          ConfigurationHandler.write(os, properties);
         }
       }
-    }
-  }
-
-  /**
-   * Get the relative path for a configuration
-   */
-  private String getPathForConfiguration(Configuration configuration, RunMode runMode) {
-    SortedSet<String> runModesList = new TreeSet<>();
-    if (runMode.getNames() != null) {
-      runModesList.addAll(ImmutableList.copyOf(runMode.getNames()));
-    }
-
-    // run modes directory
-    StringBuilder path = new StringBuilder();
-    if (!runModesList.isEmpty() && !runMode.isSpecial()) {
-      path.append(StringUtils.join(runModesList, ".")).append("/");
-    }
-
-    // main name
-    if (configuration.getFactoryPid() != null) {
-      path.append(configuration.getFactoryPid()).append("-");
-    }
-    path.append(configuration.getPid()).append(".config");
-
-    return path.toString();
+    });
   }
 
 }

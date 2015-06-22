@@ -44,14 +44,14 @@ public class ProvisioningValidatorTest {
   public void testValidProvisioning() throws Exception {
     File file = new File(getClass().getResource("/validProvisioning.txt").toURI());
     assertTrue(underTest.accepts(file, CharEncoding.UTF_8));
-    underTest.validate(file, CharEncoding.UTF_8);
+    underTest.validate(file, CharEncoding.UTF_8, null);
   }
 
   @Test(expected = ValidationException.class)
   public void testInvalidProvisioning() throws Exception {
     File file = new File(getClass().getResource("/invalidProvisioning.txt").toURI());
     assertTrue(underTest.accepts(file, CharEncoding.UTF_8));
-    underTest.validate(file, CharEncoding.UTF_8);
+    underTest.validate(file, CharEncoding.UTF_8, null);
   }
 
   @Test

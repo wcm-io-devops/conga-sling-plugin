@@ -24,6 +24,7 @@ import io.wcm.devops.conga.generator.spi.ValidatorPlugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Validates Sling Provisioning Model files.
@@ -46,7 +47,7 @@ public class ProvisioningValidator implements ValidatorPlugin {
   }
 
   @Override
-  public void validate(File file, String charset) throws ValidationException {
+  public void validate(File file, String charset, Map<String, Object> options) throws ValidationException {
     try {
       ProvisioningUtil.getModel(file, charset);
     }

@@ -28,6 +28,7 @@ import io.wcm.devops.conga.generator.util.PluginManager;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Dictionary;
 
 import org.apache.commons.io.FileUtils;
@@ -59,7 +60,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
 
     // post-process
     assertTrue(underTest.accepts(provisioningFile, CharEncoding.UTF_8));
-    underTest.postProcess(provisioningFile, CharEncoding.UTF_8, LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
+    underTest.postProcess(provisioningFile, CharEncoding.UTF_8, null, LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
 
     // validate
     assertFalse(provisioningFile.exists());
@@ -67,7 +68,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     File mypid = new File(target, "my.pid.config");
     assertTrue(mypid.exists());
 
-    try (FileInputStream is = new FileInputStream(mypid)) {
+    try (InputStream is = new FileInputStream(mypid)) {
       Dictionary<?, ?> config = ConfigurationHandler.read(is);
       assertEquals("value1", config.get("stringProperty"));
       assertArrayEquals(new String[] {
