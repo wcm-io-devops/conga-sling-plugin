@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -86,17 +88,24 @@ public final class ProvisioningUtil {
    * Visits OSGi configuration for all feature and run modes.
    * @param model Provisioning Model
    * @param consumer Configuration consumer
+   * @param <R> Result type
+   * @return List of non-null results
    * @throws IOException
    */
-  public static void visitOsgiConfigurations(Model model, ConfigConsumer consumer) throws IOException {
+  public static <R> List<R> visitOsgiConfigurations(Model model, ConfigConsumer<R> consumer) throws IOException {
+    List<R> results = new ArrayList<>();
     for (Feature feature : model.getFeatures()) {
       for (RunMode runMode : feature.getRunModes()) {
         for (Configuration configuration : runMode.getConfigurations()) {
           String path = getPathForConfiguration(configuration, runMode);
-          consumer.accept(path, configuration.getProperties());
+          R result = consumer.accept(path, configuration.getProperties());
+          if (result != null) {
+            results.add(result);
+          }
         }
       }
     }
+    return results;
   }
 
   /**

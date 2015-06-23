@@ -24,14 +24,15 @@ import java.util.Dictionary;
 
 /**
  * Consuming configurations found in provisioning model.
+ * @param <R> Result
  */
-public interface ConfigConsumer {
+public interface ConfigConsumer<R> {
 
   /**
    * Method is called for each configuration found in provisioning model.
    * @param path Path for configuration in filesystem.
    * @param properties OSGi properties
    */
-  void accept(String path, Dictionary<String, Object> properties) throws IOException;
+  R accept(String path, Dictionary<String, Object> properties) throws IOException;
 
 }

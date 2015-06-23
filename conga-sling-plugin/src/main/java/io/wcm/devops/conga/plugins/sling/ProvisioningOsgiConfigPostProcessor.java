@@ -29,7 +29,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Dictionary;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.CharEncoding;
 import org.apache.felix.cm.file.ConfigurationHandler;
 import org.apache.sling.provisioning.model.Model;
 import org.slf4j.Logger;
@@ -51,22 +53,26 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
 
   @Override
   public boolean accepts(FileContext file, PostProcessorContext context) {
-    return ProvisioningUtil.isProvisioningFile(context.getFile(), context.getCharset());
+    return ProvisioningUtil.isProvisioningFile(file);
   }
 
   @Override
   public List<FileContext> apply(FileContext fileContext, PostProcessorContext context) {
     File file = fileContext.getFile();
-    String charset = fileContext.getCharset();
     Logger logger = context.getLogger();
 
     try {
       // generate OSGi configurations
-      Model model = ProvisioningUtil.getModel(file, charset);
-      generateOsgiConfigurations(model, file.getParentFile(), logger);
+      Model model = ProvisioningUtil.getModel(fileContext);
+      List<File> files = generateOsgiConfigurations(model, file.getParentFile(), logger);
 
       // delete provisioning file after transformation
       file.delete();
+
+      // return list of generated osgi configuration files
+      return files.stream()
+          .map(result -> new FileContext().file(result).charset(CharEncoding.UTF_8))
+          .collect(Collectors.toList());
     }
     catch (IOException ex) {
       throw new GeneratorException("Unable to post-process sling provisioning OSGi configurations.", ex);
@@ -80,10 +86,10 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
    * @param logger Logger
    * @throws IOException
    */
-  private void generateOsgiConfigurations(Model model, File dir, Logger logger) throws IOException {
-    ProvisioningUtil.visitOsgiConfigurations(model, new ConfigConsumer() {
+  private List<File> generateOsgiConfigurations(Model model, File dir, Logger logger) throws IOException {
+    return ProvisioningUtil.visitOsgiConfigurations(model, new ConfigConsumer<File>() {
       @Override
-      public void accept(String path, Dictionary<String, Object> properties) throws IOException {
+      public File accept(String path, Dictionary<String, Object> properties) throws IOException {
         logger.info("  Generate " + path);
 
         File confFile = new File(dir, path);
@@ -91,6 +97,7 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
         try (FileOutputStream os = new FileOutputStream(confFile)) {
           ConfigurationHandler.write(os, properties);
         }
+        return confFile;
       }
     });
   }
