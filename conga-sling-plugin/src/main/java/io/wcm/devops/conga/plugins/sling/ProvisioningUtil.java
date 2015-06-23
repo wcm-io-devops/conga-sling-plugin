@@ -19,9 +19,9 @@
  */
 package io.wcm.devops.conga.plugins.sling;
 
+import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.util.FileUtil;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,13 +55,12 @@ public final class ProvisioningUtil {
   /**
    * Check if given file is a sling provisioning file.
    * @param file File
-   * @param charset Charset
    * @return true if it seems to be so
    */
-  public static boolean isProvisioningFile(File file, String charset) {
+  public static boolean isProvisioningFile(FileContext file) {
     try {
-      return FileUtil.matchesExtension(file, FILE_EXTENSION)
-          && StringUtils.contains(FileUtils.readFileToString(file, charset), "[feature ");
+      return FileUtil.matchesExtension(file.getFile(), FILE_EXTENSION)
+          && StringUtils.contains(FileUtils.readFileToString(file.getFile(), file.getCharset()), "[feature ");
     }
     catch (IOException ex) {
       return false;
@@ -71,13 +70,12 @@ public final class ProvisioningUtil {
   /**
    * Parse provisioning file to model
    * @param file File
-   * @param charset Charset
    * @return Model
    * @throws IOException
    */
-  public static Model getModel(File file, String charset) throws IOException {
-    try (InputStream is = new FileInputStream(file);
-        Reader reader = new InputStreamReader(is, charset)) {
+  public static Model getModel(FileContext file) throws IOException {
+    try (InputStream is = new FileInputStream(file.getFile());
+        Reader reader = new InputStreamReader(is, file.getCharset())) {
       Model model = ModelReader.read(reader, null);
       model = ModelUtility.getEffectiveModel(model, null);
       return model;

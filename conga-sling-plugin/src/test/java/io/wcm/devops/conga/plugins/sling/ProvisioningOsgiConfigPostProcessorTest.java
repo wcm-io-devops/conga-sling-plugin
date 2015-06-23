@@ -23,8 +23,8 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import io.wcm.devops.conga.generator.context.PostProcessorContextImpl;
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
+import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 import io.wcm.devops.conga.generator.util.PluginManager;
 
@@ -61,13 +61,14 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     FileUtils.copyFile(new File(getClass().getResource("/validProvisioning.txt").toURI()), provisioningFile);
 
     // post-process
-    PostProcessorContext context = new PostProcessorContextImpl()
+    FileContext fileContext = new FileContext()
     .file(provisioningFile)
-    .charset(CharEncoding.UTF_8)
+    .charset(CharEncoding.UTF_8);
+    PostProcessorContext context = new PostProcessorContext()
     .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
 
-    assertTrue(underTest.accepts(context));
-    underTest.postProcess(context);
+    assertTrue(underTest.accepts(fileContext, context));
+    underTest.apply(fileContext, context);
 
     // validate
     assertFalse(provisioningFile.exists());

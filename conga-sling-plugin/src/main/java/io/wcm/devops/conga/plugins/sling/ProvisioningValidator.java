@@ -21,6 +21,7 @@ package io.wcm.devops.conga.plugins.sling;
 
 import io.wcm.devops.conga.generator.spi.ValidationException;
 import io.wcm.devops.conga.generator.spi.ValidatorPlugin;
+import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.ValidatorContext;
 
 import java.io.IOException;
@@ -41,18 +42,19 @@ public class ProvisioningValidator implements ValidatorPlugin {
   }
 
   @Override
-  public boolean accepts(ValidatorContext context) {
-    return ProvisioningUtil.isProvisioningFile(context.getFile(), context.getCharset());
+  public boolean accepts(FileContext file, ValidatorContext context) {
+    return ProvisioningUtil.isProvisioningFile(file);
   }
 
   @Override
-  public void validate(ValidatorContext context) throws ValidationException {
+  public Void apply(FileContext file, ValidatorContext context) throws ValidationException {
     try {
-      ProvisioningUtil.getModel(context.getFile(), context.getCharset());
+      ProvisioningUtil.getModel(file);
     }
     catch (IOException ex) {
       throw new ValidationException("Sling Provision Model is invalid: " + ex.getMessage(), ex);
     }
+    return null;
   }
 
 }
