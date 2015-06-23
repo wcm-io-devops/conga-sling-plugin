@@ -17,16 +17,18 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.devops.conga.plugins.sling;
+package io.wcm.devops.conga.plugins.sling.util;
 
+import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.util.FileUtil;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -55,13 +57,12 @@ public final class ProvisioningUtil {
   /**
    * Check if given file is a sling provisioning file.
    * @param file File
-   * @param charset Charset
    * @return true if it seems to be so
    */
-  public static boolean isProvisioningFile(File file, String charset) {
+  public static boolean isProvisioningFile(FileContext file) {
     try {
-      return FileUtil.matchesExtension(file, FILE_EXTENSION)
-          && StringUtils.contains(FileUtils.readFileToString(file, charset), "[feature ");
+      return FileUtil.matchesExtension(file.getFile(), FILE_EXTENSION)
+          && StringUtils.contains(FileUtils.readFileToString(file.getFile(), file.getCharset()), "[feature ");
     }
     catch (IOException ex) {
       return false;
@@ -71,13 +72,12 @@ public final class ProvisioningUtil {
   /**
    * Parse provisioning file to model
    * @param file File
-   * @param charset Charset
    * @return Model
    * @throws IOException
    */
-  public static Model getModel(File file, String charset) throws IOException {
-    try (InputStream is = new FileInputStream(file);
-        Reader reader = new InputStreamReader(is, charset)) {
+  public static Model getModel(FileContext file) throws IOException {
+    try (InputStream is = new FileInputStream(file.getFile());
+        Reader reader = new InputStreamReader(is, file.getCharset())) {
       Model model = ModelReader.read(reader, null);
       model = ModelUtility.getEffectiveModel(model, null);
       return model;
@@ -88,17 +88,24 @@ public final class ProvisioningUtil {
    * Visits OSGi configuration for all feature and run modes.
    * @param model Provisioning Model
    * @param consumer Configuration consumer
+   * @param <R> Result type
+   * @return List of non-null results
    * @throws IOException
    */
-  public static void visitOsgiConfigurations(Model model, ConfigConsumer consumer) throws IOException {
+  public static <R> List<R> visitOsgiConfigurations(Model model, ConfigConsumer<R> consumer) throws IOException {
+    List<R> results = new ArrayList<>();
     for (Feature feature : model.getFeatures()) {
       for (RunMode runMode : feature.getRunModes()) {
         for (Configuration configuration : runMode.getConfigurations()) {
           String path = getPathForConfiguration(configuration, runMode);
-          consumer.accept(path, configuration.getProperties());
+          R result = consumer.accept(path, configuration.getProperties());
+          if (result != null) {
+            results.add(result);
+          }
         }
       }
     }
+    return results;
   }
 
   /**

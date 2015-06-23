@@ -17,18 +17,17 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.devops.conga.plugins.sling;
+package io.wcm.devops.conga.plugins.sling.fileheader;
 
-import io.wcm.devops.conga.generator.spi.ValidationException;
-import io.wcm.devops.conga.generator.spi.ValidatorPlugin;
-import io.wcm.devops.conga.generator.spi.context.ValidatorContext;
-
-import java.io.IOException;
+import io.wcm.devops.conga.generator.plugins.fileheader.AbstractFileHeader;
+import io.wcm.devops.conga.generator.spi.context.FileContext;
+import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
+import io.wcm.devops.conga.plugins.sling.util.ProvisioningUtil;
 
 /**
- * Validates Sling Provisioning Model files.
+ * Adds file headers to Sling provisioning files.
  */
-public class ProvisioningValidator implements ValidatorPlugin {
+public final class ProvisioningFileHeader extends AbstractFileHeader {
 
   /**
    * Plugin name
@@ -41,18 +40,18 @@ public class ProvisioningValidator implements ValidatorPlugin {
   }
 
   @Override
-  public boolean accepts(ValidatorContext context) {
-    return ProvisioningUtil.isProvisioningFile(context.getFile(), context.getCharset());
+  public boolean accepts(FileContext file, FileHeaderContext context) {
+    return ProvisioningUtil.isProvisioningFile(file);
   }
 
   @Override
-  public void validate(ValidatorContext context) throws ValidationException {
-    try {
-      ProvisioningUtil.getModel(context.getFile(), context.getCharset());
-    }
-    catch (IOException ex) {
-      throw new ValidationException("Sling Provision Model is invalid: " + ex.getMessage(), ex);
-    }
+  protected String getCommentLinePrefix() {
+    return "# ";
+  }
+
+  @Override
+  protected String getBlockSuffix() {
+    return getLineBreak();
   }
 
 }
