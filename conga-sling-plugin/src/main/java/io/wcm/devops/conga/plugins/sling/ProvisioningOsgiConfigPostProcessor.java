@@ -21,12 +21,12 @@ package io.wcm.devops.conga.plugins.sling;
 
 import io.wcm.devops.conga.generator.GeneratorException;
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
+import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Dictionary;
-import java.util.Map;
 
 import org.apache.felix.cm.file.ConfigurationHandler;
 import org.apache.sling.provisioning.model.Model;
@@ -48,12 +48,16 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
   }
 
   @Override
-  public boolean accepts(File file, String charset) {
-    return ProvisioningUtil.isProvisioningFile(file, charset);
+  public boolean accepts(PostProcessorContext context) {
+    return ProvisioningUtil.isProvisioningFile(context.getFile(), context.getCharset());
   }
 
   @Override
-  public void postProcess(File file, String charset, Map<String, Object> options, Logger logger) {
+  public void postProcess(PostProcessorContext context) {
+    File file = context.getFile();
+    String charset = context.getCharset();
+    Logger logger = context.getLogger();
+
     try {
       // generate OSGi configurations
       Model model = ProvisioningUtil.getModel(file, charset);
