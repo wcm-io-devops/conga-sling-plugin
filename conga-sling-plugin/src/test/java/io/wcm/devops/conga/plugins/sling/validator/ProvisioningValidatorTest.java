@@ -58,7 +58,7 @@ public class ProvisioningValidatorTest {
   }
 
   @Test
-  public void testNonExisting() throws Exception {
+  public void testInvalidFileExtension() throws Exception {
     File file = new File(getClass().getResource("/noProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(CharEncoding.UTF_8);
     assertFalse(underTest.accepts(fileContext, null));
