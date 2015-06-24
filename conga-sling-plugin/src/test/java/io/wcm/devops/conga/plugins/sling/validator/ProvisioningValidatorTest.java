@@ -42,7 +42,7 @@ public class ProvisioningValidatorTest {
   }
 
   @Test
-  public void testValidProvisioning() throws Exception {
+  public void testValid() throws Exception {
     File file = new File(getClass().getResource("/validProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(CharEncoding.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
@@ -50,7 +50,7 @@ public class ProvisioningValidatorTest {
   }
 
   @Test(expected = ValidationException.class)
-  public void testInvalidProvisioning() throws Exception {
+  public void testInvalid() throws Exception {
     File file = new File(getClass().getResource("/invalidProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(CharEncoding.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
@@ -58,7 +58,7 @@ public class ProvisioningValidatorTest {
   }
 
   @Test
-  public void testNoProvisioning() throws Exception {
+  public void testNonExisting() throws Exception {
     File file = new File(getClass().getResource("/noProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(CharEncoding.UTF_8);
     assertFalse(underTest.accepts(fileContext, null));
