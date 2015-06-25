@@ -43,7 +43,7 @@ public class OsgiConfigEscapingStrategyTest {
   public void testValid() {
     assertTrue(underTest.accepts("config"));
     EscapingStrategy strategy = underTest.getEscapingStrategy();
-    assertEquals("\\ \\\"", strategy.escape(" \""));
+    assertEquals("\\ \\\"\\\\", strategy.escape(" \"\\"));
     assertEquals("äöüß€/", strategy.escape("äöüß€/"));
   }
 
