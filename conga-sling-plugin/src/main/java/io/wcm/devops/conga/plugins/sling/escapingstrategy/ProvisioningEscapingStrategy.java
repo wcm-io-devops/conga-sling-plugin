@@ -23,8 +23,6 @@ import io.wcm.devops.conga.generator.spi.EscapingStrategyPlugin;
 import io.wcm.devops.conga.generator.util.FileUtil;
 import io.wcm.devops.conga.plugins.sling.util.ProvisioningUtil;
 
-import com.github.jknack.handlebars.EscapingStrategy;
-
 /**
  * Escapes for Sling Provisioning files.
  */
@@ -47,9 +45,9 @@ public class ProvisioningEscapingStrategy implements EscapingStrategyPlugin {
   }
 
   @Override
-  public EscapingStrategy getEscapingStrategy() {
+  public String escape(CharSequence value) {
     // use same escaping rules as for OSGi configurations
-    return OsgiConfigEscapingStrategy.ESCAPING_STRATEGY;
+    return value == null ? null : OsgiConfigEscapingStrategy.ESCAPE_OSGI_CONFIG.translate(value);
   }
 
 }

@@ -26,8 +26,6 @@ import org.apache.commons.lang3.text.translate.AggregateTranslator;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.LookupTranslator;
 
-import com.github.jknack.handlebars.EscapingStrategy;
-
 /**
  * Escapes for JSON files.
  */
@@ -43,7 +41,7 @@ public class OsgiConfigEscapingStrategy implements EscapingStrategyPlugin {
   /**
    * Defines translations for strings in Apache Felix OSGi configuration files.
    */
-  private static final CharSequenceTranslator ESCAPE_OSGI_CONFIG =
+  static final CharSequenceTranslator ESCAPE_OSGI_CONFIG =
       new AggregateTranslator(
           new LookupTranslator(
               new String[][] {
@@ -59,13 +57,6 @@ public class OsgiConfigEscapingStrategy implements EscapingStrategyPlugin {
               })
           );
 
-  static final EscapingStrategy ESCAPING_STRATEGY = new EscapingStrategy() {
-    @Override
-    public String escape(CharSequence value) {
-      return value == null ? null : ESCAPE_OSGI_CONFIG.translate(value);
-    }
-  };
-
   @Override
   public String getName() {
     return NAME;
@@ -77,8 +68,8 @@ public class OsgiConfigEscapingStrategy implements EscapingStrategyPlugin {
   }
 
   @Override
-  public EscapingStrategy getEscapingStrategy() {
-    return ESCAPING_STRATEGY;
+  public String escape(CharSequence value) {
+    return value == null ? null : ESCAPE_OSGI_CONFIG.translate(value);
   }
 
 }

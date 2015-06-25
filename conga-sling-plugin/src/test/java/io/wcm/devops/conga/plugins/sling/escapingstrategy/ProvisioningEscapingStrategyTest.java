@@ -28,8 +28,6 @@ import io.wcm.devops.conga.generator.util.PluginManager;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.github.jknack.handlebars.EscapingStrategy;
-
 public class ProvisioningEscapingStrategyTest {
 
   private EscapingStrategyPlugin underTest;
@@ -42,9 +40,8 @@ public class ProvisioningEscapingStrategyTest {
   @Test
   public void testValid() {
     assertTrue(underTest.accepts("provisioning"));
-    EscapingStrategy strategy = underTest.getEscapingStrategy();
-    assertEquals("\\ \\\"", strategy.escape(" \""));
-    assertEquals("äöüß€/", strategy.escape("äöüß€/"));
+    assertEquals("\\ \\\"\\\\", underTest.escape(" \"\\"));
+    assertEquals("äöüß€/", underTest.escape("äöüß€/"));
   }
 
   @Test
