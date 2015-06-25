@@ -3,9 +3,9 @@ templateDir: sling
 files:
 
 # Define a single file to be generated for all role variants
-- file: sling-provisioning.txt
+- file: sling-provisioning.provisioning
   dir: osgi-config
-  template: sling-provisioning.txt.hbs
+  template: sling-provisioning.provisioning.hbs
   validators:
   - sling-provisioning
   # Post-processors apply further actions after generation the file
@@ -25,5 +25,4 @@ config:
     permgenspace:
       max: 256m
 
-  topologyConnectors:
-    - http://localhost:8080/libs/sling/topology/connector
+  var1: Value 1
