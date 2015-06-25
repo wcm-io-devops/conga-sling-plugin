@@ -48,7 +48,15 @@ import com.google.common.collect.ImmutableList;
  */
 public final class ProvisioningUtil {
 
-  private static final String FILE_EXTENSION = "txt";
+  /**
+   * Provisioning file extension (this is currently not standardized)
+   */
+  public static final String FILE_EXTENSION = "provisioning";
+
+  /**
+   * Alternative "txt" file extension for provisioning files, which is currently used officially.
+   */
+  public static final String TEXT_FILE_EXTENSION = "txt";
 
   private ProvisioningUtil() {
     // static methods only
@@ -60,8 +68,12 @@ public final class ProvisioningUtil {
    * @return true if it seems to be so
    */
   public static boolean isProvisioningFile(FileContext file) {
+    if (FileUtil.matchesExtension(file, FILE_EXTENSION)) {
+      return true;
+    }
     try {
-      return FileUtil.matchesExtension(file.getFile(), FILE_EXTENSION)
+      // check for generic txt extension and do some heuristics on the content of the file
+      return FileUtil.matchesExtension(file.getFile(), TEXT_FILE_EXTENSION)
           && StringUtils.contains(FileUtils.readFileToString(file.getFile(), file.getCharset()), "[feature ");
     }
     catch (IOException ex) {
