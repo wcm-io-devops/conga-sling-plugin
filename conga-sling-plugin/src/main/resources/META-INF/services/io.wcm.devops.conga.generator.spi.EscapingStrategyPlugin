@@ -1,0 +1,2 @@
+io.wcm.devops.conga.plugins.sling.escapingstrategy.OsgiConfigEscapingStrategy
+io.wcm.devops.conga.plugins.sling.escapingstrategy.ProvisioningEscapingStrategy
