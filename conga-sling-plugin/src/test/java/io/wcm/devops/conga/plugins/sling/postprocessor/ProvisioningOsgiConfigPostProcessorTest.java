@@ -17,17 +17,20 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.devops.conga.plugins.sling;
+package io.wcm.devops.conga.plugins.sling.postprocessor;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
+import io.wcm.devops.conga.generator.spi.context.FileContext;
+import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 import io.wcm.devops.conga.generator.util.PluginManager;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Dictionary;
 
 import org.apache.commons.io.FileUtils;
@@ -58,8 +61,14 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     FileUtils.copyFile(new File(getClass().getResource("/validProvisioning.txt").toURI()), provisioningFile);
 
     // post-process
-    assertTrue(underTest.accepts(provisioningFile, CharEncoding.UTF_8));
-    underTest.postProcess(provisioningFile, CharEncoding.UTF_8, LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
+    FileContext fileContext = new FileContext()
+    .file(provisioningFile)
+    .charset(CharEncoding.UTF_8);
+    PostProcessorContext context = new PostProcessorContext()
+    .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
+
+    assertTrue(underTest.accepts(fileContext, context));
+    underTest.apply(fileContext, context);
 
     // validate
     assertFalse(provisioningFile.exists());
@@ -67,7 +76,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     File mypid = new File(target, "my.pid.config");
     assertTrue(mypid.exists());
 
-    try (FileInputStream is = new FileInputStream(mypid)) {
+    try (InputStream is = new FileInputStream(mypid)) {
       Dictionary<?, ?> config = ConfigurationHandler.read(is);
       assertEquals("value1", config.get("stringProperty"));
       assertArrayEquals(new String[] {

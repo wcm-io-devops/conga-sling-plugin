@@ -17,18 +17,17 @@
  * limitations under the License.
  * #L%
  */
-package io.wcm.devops.conga.plugins.sling;
+package io.wcm.devops.conga.plugins.sling.fileheader;
 
-import io.wcm.devops.conga.generator.spi.ValidationException;
-import io.wcm.devops.conga.generator.spi.ValidatorPlugin;
-
-import java.io.File;
-import java.io.IOException;
+import io.wcm.devops.conga.generator.plugins.fileheader.AbstractFileHeader;
+import io.wcm.devops.conga.generator.spi.context.FileContext;
+import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
+import io.wcm.devops.conga.plugins.sling.util.ProvisioningUtil;
 
 /**
- * Validates Sling Provisioning Model files.
+ * Adds file headers to Sling provisioning files.
  */
-public class ProvisioningValidator implements ValidatorPlugin {
+public final class ProvisioningFileHeader extends AbstractFileHeader {
 
   /**
    * Plugin name
@@ -41,18 +40,18 @@ public class ProvisioningValidator implements ValidatorPlugin {
   }
 
   @Override
-  public boolean accepts(File file, String charset) {
-    return ProvisioningUtil.isProvisioningFile(file, charset);
+  public boolean accepts(FileContext file, FileHeaderContext context) {
+    return ProvisioningUtil.isProvisioningFile(file);
   }
 
   @Override
-  public void validate(File file, String charset) throws ValidationException {
-    try {
-      ProvisioningUtil.getModel(file, charset);
-    }
-    catch (IOException ex) {
-      throw new ValidationException("Sling Provision Model is invalid: " + ex.getMessage(), ex);
-    }
+  protected String getCommentLinePrefix() {
+    return "# ";
+  }
+
+  @Override
+  protected String getBlockSuffix() {
+    return getLineBreak();
   }
 
 }

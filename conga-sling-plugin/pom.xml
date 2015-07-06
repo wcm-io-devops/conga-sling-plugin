@@ -19,23 +19,23 @@
   #L%
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.wcm.devops.conga</groupId>
     <artifactId>io.wcm.devops.conga.parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <relativePath/>
+    <version>1.0.0</version>
+    <relativePath />
   </parent>
 
   <groupId>io.wcm.devops.conga.plugins</groupId>
   <artifactId>io.wcm.devops.conga.plugins.sling</artifactId>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
 
   <name>CONGA Sling Plugin</name>
-  <description>CONfiguration GenerAtor Plugin for Apache Sling</description>
+  <description>wcm.io DevOps CONfiguration GenerAtor Plugin for Apache Sling.</description>
 
   <scm>
     <connection>scm:git:https://github.com/wcm-io-devops/wcm-io-devops-conga-sling-plugin.git</connection>
@@ -49,7 +49,7 @@
     <dependency>
       <groupId>io.wcm.devops.conga</groupId>
       <artifactId>io.wcm.devops.conga.generator</artifactId>
-      <version>1.0.0-SNAPSHOT</version>
+      <version>1.0.0</version>
       <scope>compile</scope>
     </dependency>
 
