@@ -38,9 +38,9 @@
   <description>wcm.io DevOps CONfiguration GenerAtor Plugin for Apache Sling.</description>
 
   <scm>
-    <connection>scm:git:https://github.com/wcm-io-devops/wcm-io-devops-conga-sling-plugin.git</connection>
-    <developerConnection>scm:git:https://github.com/wcm-io-devops/wcm-io-devops-conga-sling-plugin.git</developerConnection>
-    <url>https://github.com/wcm-io-devops/wcm-io-devops-conga-sling-plugin</url>
+    <connection>scm:git:https://github.com/wcm-io-devops/conga-sling-plugin.git</connection>
+    <developerConnection>scm:git:https://github.com/wcm-io-devops/conga-sling-plugin.git</developerConnection>
+    <url>https://github.com/wcm-io-devops/conga-sling-plugin</url>
     <tag>HEAD</tag>
   </scm>
 
