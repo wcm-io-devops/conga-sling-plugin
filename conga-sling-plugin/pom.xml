@@ -44,6 +44,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <site.url.module.prefix>conga/plugins/sling</site.url.module.prefix>
+  </properties>
+  
   <dependencies>
 
     <dependency>
@@ -84,5 +88,12 @@
 
     </plugins>
   </build>
+
+  <distributionManagement>
+    <site>
+      <id>${site.deploy.id}</id>
+      <url>${site.deploy.url}${site.url.module.prefix}</url>
+    </site>
+  </distributionManagement>
 
 </project>
