@@ -2,7 +2,7 @@
 ======
 [![Build Status](https://travis-ci.org/wcm-io-devops/conga-sling-plugin.png?branch=develop)](https://travis-ci.org/wcm-io-devops/conga-sling-plugin)
 
-Documentation: http://devops.wcm.io/conga/plugins/aem/<br/>
+Documentation: http://devops.wcm.io/conga/plugins/sling/<br/>
 Issues: https://wcm-io.atlassian.net/projects/WDCONGA<br/>
 Wiki: https://wcm-io.atlassian.net/wiki/<br/>
 Continuous Integration: https://travis-ci.org/conga-sling-plugin
