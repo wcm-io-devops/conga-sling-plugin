@@ -32,8 +32,12 @@
   <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-  <name>CONGA Plugin for Sling Root</name>
+  <name>CONGA Sling Plugin</name>
   <description>Root POM for wcm.io CONGA Plugins for Apache Sling.</description>
+
+  <properties>
+    <site.url.module.prefix>conga/plugins/sling</site.url.module.prefix>
+  </properties>
 
   <modules>
     <module>conga-sling-plugin</module>
@@ -53,16 +57,14 @@
         </configuration>
       </plugin>
 
-      <!-- do not generate site for this project -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-site-plugin</artifactId>
-        <configuration>
-          <skipDeploy>true</skipDeploy>
-        </configuration>
-      </plugin>
-
     </plugins>
   </build>
+
+  <distributionManagement>
+    <site>
+      <id>${site.deploy.id}</id>
+      <url>${site.deploy.url}${site.url.module.prefix}</url>
+    </site>
+  </distributionManagement>
 
 </project>
