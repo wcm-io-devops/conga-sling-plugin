@@ -42,6 +42,7 @@ public class OsgiConfigEscapingStrategyTest {
     assertTrue(underTest.accepts("config"));
     assertEquals("\\ \\\"\\\\", underTest.escape(" \"\\"));
     assertEquals("äöüß€/", underTest.escape("äöüß€/"));
+    assertEquals("aa\\=bb", underTest.escape("aa=bb"));
   }
 
   @Test

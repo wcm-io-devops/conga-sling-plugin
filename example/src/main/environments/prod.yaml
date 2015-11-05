@@ -7,5 +7,6 @@ nodes:
   # Config for all roles in this node
   config:
     jvm.heapspace.max: 2048m
+    var2: aa=bb
   roles:
   - role: sling

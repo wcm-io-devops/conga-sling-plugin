@@ -53,6 +53,9 @@ public class OsgiConfigEscapingStrategy implements EscapingStrategyPlugin {
                   },
                   {
                     "\\", "\\\\"
+                  },
+                  {
+                    "=", "\\="
                   }
               })
           );
