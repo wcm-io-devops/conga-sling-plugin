@@ -22,7 +22,6 @@ package io.wcm.devops.conga.plugins.sling.handlebars.escaping;
 import io.wcm.devops.conga.generator.spi.handlebars.EscapingStrategyPlugin;
 import io.wcm.devops.conga.generator.util.FileUtil;
 
-import org.apache.commons.lang3.text.translate.AggregateTranslator;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.LookupTranslator;
 
@@ -42,23 +41,21 @@ public class OsgiConfigEscapingStrategy implements EscapingStrategyPlugin {
    * Defines translations for strings in Apache Felix OSGi configuration files.
    */
   static final CharSequenceTranslator ESCAPE_OSGI_CONFIG =
-      new AggregateTranslator(
-          new LookupTranslator(
-              new String[][] {
-                  {
-                    " ", "\\ "
-                  },
-                  {
-                    "\"", "\\\""
-                  },
-                  {
-                    "\\", "\\\\"
-                  },
-                  {
-                    "=", "\\="
-                  }
-              })
-          );
+      new LookupTranslator(
+          new String[][] {
+              {
+                " ", "\\ "
+              },
+              {
+                "\"", "\\\""
+              },
+              {
+                "\\", "\\\\"
+              },
+              {
+                "=", "\\="
+              }
+          });
 
   @Override
   public String getName() {
