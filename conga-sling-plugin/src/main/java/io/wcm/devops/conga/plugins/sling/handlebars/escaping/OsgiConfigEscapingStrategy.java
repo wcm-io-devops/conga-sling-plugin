@@ -22,6 +22,10 @@ package io.wcm.devops.conga.plugins.sling.handlebars.escaping;
 import io.wcm.devops.conga.generator.spi.handlebars.EscapingStrategyPlugin;
 import io.wcm.devops.conga.generator.util.FileUtil;
 
+import java.io.IOException;
+import java.io.Writer;
+
+import org.apache.commons.lang3.text.translate.AggregateTranslator;
 import org.apache.commons.lang3.text.translate.CharSequenceTranslator;
 import org.apache.commons.lang3.text.translate.LookupTranslator;
 
@@ -37,25 +41,58 @@ public class OsgiConfigEscapingStrategy implements EscapingStrategyPlugin {
 
   private static final String FILE_EXTENSION = "config";
 
-  /**
+  /*
    * Defines translations for strings in Apache Felix OSGi configuration files.
+   * The rules are taken from
+   * http://svn.apache.org/repos/asf/felix/trunk/configadmin/src/main/java/org/apache/felix/cm/file/ConfigurationHandler.java
+   * method 'writeQuoted'.
    */
   static final CharSequenceTranslator ESCAPE_OSGI_CONFIG =
-      new LookupTranslator(
-          new String[][] {
-              {
-                " ", "\\ "
-              },
-              {
-                "\"", "\\\""
-              },
-              {
-                "\\", "\\\\"
-              },
-              {
-                "=", "\\="
+      new AggregateTranslator(
+          new LookupTranslator(
+              new String[][] {
+                  {
+                    " ", "\\ "
+                  },
+                  {
+                    "\"", "\\\""
+                  },
+                  {
+                    "\\", "\\\\"
+                  },
+                  {
+                    "=", "\\="
+                  },
+                  // well known escapes
+                  {
+                    "\b", "\\b"
+                  },
+                  {
+                    "\t", "\\t"
+                  },
+                  {
+                    "\n", "\\n"
+                  },
+                  {
+                    "\f", "\\f"
+                  },
+                  {
+                    "\r", "\\r"
+                  }
+              }),
+              new CharSequenceTranslator() {
+            @Override
+            public int translate(CharSequence input, int index, Writer out) throws IOException {
+              char c = input.charAt(index);
+              if (c < ' ') {
+                String t = "000" + Integer.toHexString(c);
+                out.write("\\u" + t.substring(t.length() - 4));
+                return 1;
               }
-          });
+              return 0;
+            }
+          }
+          );
 
   @Override
   public String getName() {
