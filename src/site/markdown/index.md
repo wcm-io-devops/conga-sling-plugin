@@ -14,7 +14,7 @@ wcm.io DevOps CONfiguration GenerAtor Plugin for [Apache Sling](http://sling.apa
     <dependency>
       <groupId>io.wcm.devops.conga.plugins</groupId>
       <artifactId>io.wcm.devops.conga.plugins.sling</artifactId>
-      <version>1.0.0</version>
+      <version>1.0.2</version>
     </dependency>
   </dependencies>
 </plugin>
