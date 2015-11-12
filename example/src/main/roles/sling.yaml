@@ -26,3 +26,4 @@ config:
       max: 256m
 
   var1: Value 1
+  var2:

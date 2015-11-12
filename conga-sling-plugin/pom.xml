@@ -23,33 +23,37 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <groupId>io.wcm.devops.conga</groupId>
-    <artifactId>io.wcm.devops.conga.parent</artifactId>
-    <version>1.0.0</version>
+    <groupId>io.wcm.devops</groupId>
+    <artifactId>io.wcm.devops.parent_toplevel</artifactId>
+    <version>1.0.2</version>
     <relativePath />
   </parent>
 
   <groupId>io.wcm.devops.conga.plugins</groupId>
   <artifactId>io.wcm.devops.conga.plugins.sling</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
   <packaging>jar</packaging>
 
   <name>CONGA Sling Plugin</name>
   <description>wcm.io DevOps CONfiguration GenerAtor Plugin for Apache Sling.</description>
 
   <scm>
-    <connection>scm:git:https://github.com/wcm-io-devops/wcm-io-devops-conga-sling-plugin.git</connection>
-    <developerConnection>scm:git:https://github.com/wcm-io-devops/wcm-io-devops-conga-sling-plugin.git</developerConnection>
-    <url>https://github.com/wcm-io-devops/wcm-io-devops-conga-sling-plugin</url>
+    <connection>scm:git:https://github.com/wcm-io-devops/conga-sling-plugin.git</connection>
+    <developerConnection>scm:git:https://github.com/wcm-io-devops/conga-sling-plugin.git</developerConnection>
+    <url>https://github.com/wcm-io-devops/conga-sling-plugin</url>
     <tag>HEAD</tag>
   </scm>
 
+  <properties>
+    <site.url.module.prefix>conga/plugins/sling/conga-sling-plugin</site.url.module.prefix>
+  </properties>
+  
   <dependencies>
 
     <dependency>
       <groupId>io.wcm.devops.conga</groupId>
       <artifactId>io.wcm.devops.conga.generator</artifactId>
-      <version>1.0.0</version>
+      <version>1.1.0</version>
       <scope>compile</scope>
     </dependency>
 
@@ -84,5 +88,12 @@
 
     </plugins>
   </build>
+
+  <distributionManagement>
+    <site>
+      <id>${site.deploy.id}</id>
+      <url>${site.deploy.url}${site.url.module.prefix}</url>
+    </site>
+  </distributionManagement>
 
 </project>
