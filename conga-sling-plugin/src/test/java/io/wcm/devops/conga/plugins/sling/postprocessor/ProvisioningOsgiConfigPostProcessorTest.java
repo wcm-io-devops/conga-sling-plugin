@@ -23,78 +23,96 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
-import io.wcm.devops.conga.generator.spi.context.FileContext;
-import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
-import io.wcm.devops.conga.generator.util.PluginManager;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Dictionary;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.felix.cm.file.ConfigurationHandler;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
+
+import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
+import io.wcm.devops.conga.generator.spi.context.FileContext;
+import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
+import io.wcm.devops.conga.generator.util.PluginManager;
 
 public class ProvisioningOsgiConfigPostProcessorTest {
 
   private PostProcessorPlugin underTest;
 
+  private File targetDir;
+
   @Before
-  public void setUp() {
+  public void setUp() throws IOException {
     underTest = new PluginManager().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
+
+    // prepare target dirctory
+    targetDir = new File("target/postprocessor-test");
+    if (targetDir.exists()) {
+      FileUtils.deleteDirectory(targetDir);
+    }
+  }
+
+  @After
+  public void tearDown() throws IOException {
+    FileUtils.deleteDirectory(targetDir);
   }
 
   @Test
   public void testPostProcess() throws Exception {
 
-    // prepare provisioning file
-    File target = new File("target/postprocessor-test");
-    if (target.exists()) {
-      FileUtils.deleteDirectory(target);
-    }
-    File provisioningFile = new File(target, "test.txt");
+    // post process example valid provisioning file
+    File provisioningFile = new File(targetDir, "test.txt");
     FileUtils.copyFile(new File(getClass().getResource("/validProvisioning.txt").toURI()), provisioningFile);
+    postProcess(provisioningFile);
 
+    // validate generated configs
+    Dictionary<?, ?> config = readConfig("my.pid.config");
+    assertEquals("value1", config.get("stringProperty"));
+    assertArrayEquals(new String[] {
+        "v1", "v2", "v3"
+    }, (String[])config.get("stringArrayProperty"));
+    assertEquals(true, config.get("booleanProperty"));
+    assertEquals(999999999999L, config.get("longProperty"));
+
+    assertExists("my.factory-my.pid.config");
+    assertExists("mode1/my.factory-my.pid2.config");
+    assertExists("mode2/my.pid2.config");
+  }
+
+  private void postProcess(File provisioningFile) {
     // post-process
     FileContext fileContext = new FileContext()
-    .file(provisioningFile)
-    .charset(CharEncoding.UTF_8);
+        .file(provisioningFile)
+        .charset(CharEncoding.UTF_8);
     PostProcessorContext context = new PostProcessorContext()
-    .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
+        .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
 
     assertTrue(underTest.accepts(fileContext, context));
     underTest.apply(fileContext, context);
 
     // validate
-    assertFalse(provisioningFile.exists());
+    assertFalse("Provisioning file deleted", provisioningFile.exists());
+  }
 
-    File mypid = new File(target, "my.pid.config");
-    assertTrue(mypid.exists());
-
-    try (InputStream is = new FileInputStream(mypid)) {
-      Dictionary<?, ?> config = ConfigurationHandler.read(is);
-      assertEquals("value1", config.get("stringProperty"));
-      assertArrayEquals(new String[] {
-          "v1", "v2", "v3"
-      }, (String[])config.get("stringArrayProperty"));
-      assertEquals(true, config.get("booleanProperty"));
-      assertEquals(999999999999L, config.get("longProperty"));
+  private Dictionary<?, ?> readConfig(String fileName) throws IOException {
+    assertExists(fileName);
+    File file = new File(targetDir, fileName);
+    try (InputStream is = new FileInputStream(file)) {
+      return ConfigurationHandler.read(is);
     }
+  }
 
-    File myfactory_mypid = new File(target, "my.factory-my.pid.config");
-    assertTrue(myfactory_mypid.exists());
-
-    File myfactory_mypid2 = new File(target, "mode1/my.factory-my.pid2.config");
-    assertTrue(myfactory_mypid2.exists());
-
-    File mypid2 = new File(target, "mode2/my.pid2.config");
-    assertTrue(mypid2.exists());
-
+  private void assertExists(String fileName) throws IOException {
+    File file = new File(targetDir, fileName);
+    assertTrue("Config file found: " + file.getCanonicalPath(), file.exists());
   }
 
 }
