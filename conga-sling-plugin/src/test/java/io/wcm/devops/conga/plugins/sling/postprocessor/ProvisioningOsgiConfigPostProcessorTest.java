@@ -22,6 +22,7 @@ package io.wcm.devops.conga.plugins.sling.postprocessor;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -29,6 +30,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Dictionary;
+import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.CharEncoding;
@@ -54,7 +56,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     underTest = new PluginManager().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
 
     // prepare target dirctory
-    targetDir = new File("target/postprocessor-test");
+    targetDir = new File("target/postprocessor-test_" + UUID.randomUUID().toString());
     if (targetDir.exists()) {
       FileUtils.deleteDirectory(targetDir);
     }
@@ -66,10 +68,10 @@ public class ProvisioningOsgiConfigPostProcessorTest {
   }
 
   @Test
-  public void testPostProcess() throws Exception {
+  public void testProvisioningExample() throws Exception {
 
     // post process example valid provisioning file
-    File provisioningFile = new File(targetDir, "test.txt");
+    File provisioningFile = new File(targetDir, "provisioningExample.txt");
     FileUtils.copyFile(new File(getClass().getResource("/validProvisioning.txt").toURI()), provisioningFile);
     postProcess(provisioningFile);
 
@@ -85,6 +87,44 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     assertExists("my.factory-my.pid.config");
     assertExists("mode1/my.factory-my.pid2.config");
     assertExists("mode2/my.pid2.config");
+  }
+
+  @Test
+  public void testSimpleConfig() throws Exception {
+    final String PROVISIONING_FILE = "[feature name=test]\n" +
+        "[configurations]\n" +
+        "com.example.ServiceConfiguration\n"
+        + "  bar=\"bar\""
+        + "  foo=\"foo\"";
+
+    // post process provisioning example
+    File provisioningFile = new File(targetDir, "simpleConfig.txt");
+    FileUtils.write(provisioningFile, PROVISIONING_FILE);
+    postProcess(provisioningFile);
+
+    // validate generated configs
+    Dictionary<?, ?> config = readConfig("com.example.ServiceConfiguration.config");
+    assertEquals("bar", config.get("bar"));
+    assertEquals("foo", config.get("foo"));
+  }
+
+  @Test
+  public void testSimpleConfigWithNewline() throws Exception {
+    final String PROVISIONING_FILE = "[feature name=test]\n" +
+        "[configurations]\n" +
+        "com.example.ServiceConfiguration\n"
+        + ""
+        + "  foo=\"foo\"";
+
+    // post process provisioning example
+    File provisioningFile = new File(targetDir, "simpleConfigWithNewline.txt");
+    FileUtils.write(provisioningFile, PROVISIONING_FILE);
+    postProcess(provisioningFile);
+
+    // validate generated configs
+    Dictionary<?, ?> config = readConfig("com.example.ServiceConfiguration.config");
+    assertNull(config.get("bar"));
+    assertEquals("foo", config.get("foo"));
   }
 
   private void postProcess(File provisioningFile) {
