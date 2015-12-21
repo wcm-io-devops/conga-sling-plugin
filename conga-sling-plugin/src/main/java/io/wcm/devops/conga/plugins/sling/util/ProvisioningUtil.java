@@ -19,9 +19,6 @@
  */
 package io.wcm.devops.conga.plugins.sling.util;
 
-import io.wcm.devops.conga.generator.spi.context.FileContext;
-import io.wcm.devops.conga.generator.util.FileUtil;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,10 +35,14 @@ import org.apache.sling.provisioning.model.Configuration;
 import org.apache.sling.provisioning.model.Feature;
 import org.apache.sling.provisioning.model.Model;
 import org.apache.sling.provisioning.model.ModelUtility;
+import org.apache.sling.provisioning.model.ModelUtility.ResolverOptions;
 import org.apache.sling.provisioning.model.RunMode;
 import org.apache.sling.provisioning.model.io.ModelReader;
 
 import com.google.common.collect.ImmutableList;
+
+import io.wcm.devops.conga.generator.spi.context.FileContext;
+import io.wcm.devops.conga.generator.util.FileUtil;
 
 /**
  * Helper for handling provisioning file format.
@@ -91,7 +92,7 @@ public final class ProvisioningUtil {
     try (InputStream is = new FileInputStream(file.getFile());
         Reader reader = new InputStreamReader(is, file.getCharset())) {
       Model model = ModelReader.read(reader, null);
-      model = ModelUtility.getEffectiveModel(model, null);
+      model = ModelUtility.getEffectiveModel(model, new ResolverOptions());
       return model;
     }
   }
