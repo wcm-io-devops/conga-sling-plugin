@@ -35,13 +35,10 @@ import io.wcm.devops.conga.generator.util.FileUtil;
 
 /**
  * Adds file headers to OSGi .config files.
- * ***
- * WARNING: This file header plugin is disabled.
- * Multiple lines of comment on top of a felix OSGi .conf files
- * seems to be parsed not correctly e.g. by org.apache.sling.installer.core 3.6.6. Removing the comment or converting it
- * to a single line seems to work.
- * So, no file header in OSGi .config files for now.
- * ***
+ * <p>
+ * Please note: This plugin converts the file header to a single comment line,
+ * because felix configadmin versions < 1.8.8 did not support multi-line comments.
+ * </p>
  */
 public final class OsgiConfigFileHeader extends AbstractFileHeader {
 
