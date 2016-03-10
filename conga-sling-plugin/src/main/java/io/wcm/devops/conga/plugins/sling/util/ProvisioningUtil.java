@@ -86,7 +86,7 @@ public final class ProvisioningUtil {
    * Parse provisioning file to model
    * @param file File
    * @return Model
-   * @throws IOException
+   * @throws IOException I/O exception
    */
   public static Model getModel(FileContext file) throws IOException {
     try (InputStream is = new FileInputStream(file.getFile());
@@ -103,7 +103,7 @@ public final class ProvisioningUtil {
    * @param consumer Configuration consumer
    * @param <R> Result type
    * @return List of non-null results
-   * @throws IOException
+   * @throws IOException I/O exception
    */
   public static <R> List<R> visitOsgiConfigurations(Model model, ConfigConsumer<R> consumer) throws IOException {
     List<R> results = new ArrayList<>();
