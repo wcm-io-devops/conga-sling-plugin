@@ -20,10 +20,6 @@
 package io.wcm.devops.conga.plugins.sling.fileheader;
 
 import static org.junit.Assert.assertTrue;
-import io.wcm.devops.conga.generator.spi.FileHeaderPlugin;
-import io.wcm.devops.conga.generator.spi.context.FileContext;
-import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
-import io.wcm.devops.conga.generator.util.PluginManager;
 
 import java.io.File;
 
@@ -34,6 +30,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
+
+import io.wcm.devops.conga.generator.spi.FileHeaderPlugin;
+import io.wcm.devops.conga.generator.spi.context.FileContext;
+import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
+import io.wcm.devops.conga.generator.util.PluginManager;
 
 /**
  * WARNING: Test is disabled, see {@link OsgiConfigFileHeader} javadocs.

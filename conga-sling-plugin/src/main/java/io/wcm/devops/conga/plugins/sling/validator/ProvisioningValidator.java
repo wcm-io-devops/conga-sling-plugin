@@ -19,13 +19,13 @@
  */
 package io.wcm.devops.conga.plugins.sling.validator;
 
+import java.io.IOException;
+
 import io.wcm.devops.conga.generator.spi.ValidationException;
 import io.wcm.devops.conga.generator.spi.ValidatorPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.ValidatorContext;
 import io.wcm.devops.conga.plugins.sling.util.ProvisioningUtil;
-
-import java.io.IOException;
 
 /**
  * Validates Sling Provisioning Model files.

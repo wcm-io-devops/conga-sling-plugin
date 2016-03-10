@@ -19,13 +19,6 @@
  */
 package io.wcm.devops.conga.plugins.sling.postprocessor;
 
-import io.wcm.devops.conga.generator.GeneratorException;
-import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
-import io.wcm.devops.conga.generator.spi.context.FileContext;
-import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
-import io.wcm.devops.conga.plugins.sling.util.ConfigConsumer;
-import io.wcm.devops.conga.plugins.sling.util.ProvisioningUtil;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,6 +30,13 @@ import org.apache.commons.lang3.CharEncoding;
 import org.apache.felix.cm.file.ConfigurationHandler;
 import org.apache.sling.provisioning.model.Model;
 import org.slf4j.Logger;
+
+import io.wcm.devops.conga.generator.GeneratorException;
+import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
+import io.wcm.devops.conga.generator.spi.context.FileContext;
+import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
+import io.wcm.devops.conga.plugins.sling.util.ConfigConsumer;
+import io.wcm.devops.conga.plugins.sling.util.ProvisioningUtil;
 
 /**
  * Transforms a Sling Provisioning file into OSGi configurations (ignoring all other provisioning contents).
