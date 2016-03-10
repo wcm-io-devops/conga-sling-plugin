@@ -26,7 +26,6 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableList;
@@ -39,7 +38,6 @@ import io.wcm.devops.conga.generator.util.PluginManager;
 /**
  * WARNING: Test is disabled, see {@link OsgiConfigFileHeader} javadocs.
  */
-@Ignore
 public class OsgiConfigFileHeaderTest {
 
   private FileHeaderPlugin underTest;
@@ -54,12 +52,12 @@ public class OsgiConfigFileHeaderTest {
     File file = new File("target/generation-test/fileHeader.config");
     FileUtils.write(file, "myscript");
 
-    FileHeaderContext context = new FileHeaderContext().commentLines(ImmutableList.of("a", "b", "c"));
+    FileHeaderContext context = new FileHeaderContext().commentLines(ImmutableList.of("**********", "", "a", "b", "c", "", "**********"));
     FileContext fileContext = new FileContext().file(file);
     assertTrue(underTest.accepts(fileContext, context));
     underTest.apply(fileContext, context);
 
-    assertTrue(StringUtils.contains(FileUtils.readFileToString(file), "# a\n# b\n# c\n"));
+    assertTrue(StringUtils.contains(FileUtils.readFileToString(file), "# a b c"));
 
     file.delete();
   }

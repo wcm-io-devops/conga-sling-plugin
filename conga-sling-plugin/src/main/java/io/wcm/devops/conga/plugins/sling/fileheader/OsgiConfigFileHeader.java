@@ -19,6 +19,8 @@
  */
 package io.wcm.devops.conga.plugins.sling.fileheader;
 
+import org.apache.commons.lang3.StringUtils;
+
 import io.wcm.devops.conga.generator.plugins.fileheader.AbstractFileHeader;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
@@ -34,7 +36,7 @@ import io.wcm.devops.conga.generator.util.FileUtil;
  * So, no file header in OSGi .config files for now.
  * ***
  */
-final class OsgiConfigFileHeader extends AbstractFileHeader {
+public final class OsgiConfigFileHeader extends AbstractFileHeader {
 
   /**
    * Plugin name
@@ -54,13 +56,32 @@ final class OsgiConfigFileHeader extends AbstractFileHeader {
   }
 
   @Override
+  protected String sanitizeComment(String line) {
+    if (StringUtils.equals(line, "") || StringUtils.contains(line, "*****")) {
+      return null;
+    }
+    return StringUtils.trim(line);
+  }
+
+  @Override
   protected String getCommentLinePrefix() {
+    return "";
+  }
+
+  @Override
+  protected String getCommentBlockStart() {
     return "# ";
   }
 
   @Override
-  protected String getBlockSuffix() {
-    return getLineBreak();
+  protected String getCommentBlockEnd() {
+    return "\n";
+  }
+
+  @Override
+  protected String getLineBreak() {
+    // osgi config files only support single line of comment
+    return " ";
   }
 
 }
