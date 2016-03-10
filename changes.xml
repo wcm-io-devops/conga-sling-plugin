@@ -28,6 +28,9 @@
         Add file header for osgi-config files - use only a single line because multi-line comments are not supported.
       </action>
       <action type="update" dev="sseifert">
+        Add support to extract file headers to all file header plugins.
+      </action>
+      <action type="update" dev="sseifert">
         Update to Sling Provisioning Model 1.4.2.
       </action>
     </release>

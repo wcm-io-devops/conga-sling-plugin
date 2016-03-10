@@ -19,8 +19,15 @@
  */
 package io.wcm.devops.conga.plugins.sling.fileheader;
 
+import java.io.IOException;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import com.google.common.collect.ImmutableList;
+
+import io.wcm.devops.conga.generator.GeneratorException;
 import io.wcm.devops.conga.generator.plugins.fileheader.AbstractFileHeader;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
@@ -82,6 +89,23 @@ public final class OsgiConfigFileHeader extends AbstractFileHeader {
   protected String getLineBreak() {
     // osgi config files only support single line of comment
     return " ";
+  }
+
+  @Override
+  public FileHeaderContext extract(FileContext file) {
+    try {
+      String content = FileUtils.readFileToString(file.getFile(), file.getCharset());
+      String[] contentLines = StringUtils.split(content, "\n");
+      if (contentLines.length > 0 && StringUtils.startsWith(contentLines[0], getCommentLinePrefix())) {
+        String fullComment = StringUtils.trim(StringUtils.substringAfter(contentLines[0], getCommentBlockStart()));
+        List<String> lines = ImmutableList.of(fullComment);
+        return new FileHeaderContext().commentLines(lines);
+      }
+    }
+    catch (IOException ex) {
+      throw new GeneratorException("Unable parse add file header from " + FileUtil.getCanonicalPath(file), ex);
+    }
+    return null;
   }
 
 }
