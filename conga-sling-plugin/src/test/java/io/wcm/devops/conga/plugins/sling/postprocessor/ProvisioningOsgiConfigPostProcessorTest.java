@@ -133,6 +133,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
         .file(provisioningFile)
         .charset(CharEncoding.UTF_8);
     PostProcessorContext context = new PostProcessorContext()
+        .pluginManager(new PluginManager())
         .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
 
     assertTrue(underTest.accepts(fileContext, context));
