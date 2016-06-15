@@ -19,26 +19,27 @@
  */
 package io.wcm.devops.conga.plugins.sling.fileheader;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.google.common.collect.ImmutableList;
+
 import io.wcm.devops.conga.generator.spi.FileHeaderPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
 import io.wcm.devops.conga.generator.util.PluginManager;
 
-import java.io.File;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
-import com.google.common.collect.ImmutableList;
-
 /**
  * WARNING: Test is disabled, see {@link OsgiConfigFileHeader} javadocs.
  */
-@Ignore
 public class OsgiConfigFileHeaderTest {
 
   private FileHeaderPlugin underTest;
@@ -53,12 +54,18 @@ public class OsgiConfigFileHeaderTest {
     File file = new File("target/generation-test/fileHeader.config");
     FileUtils.write(file, "myscript");
 
-    FileHeaderContext context = new FileHeaderContext().commentLines(ImmutableList.of("a", "b", "c"));
+    List<String> lines = ImmutableList.of("**********", "", "Der Jodelkaiser", "aus dem Oetztal", "ist wieder daheim.", "**********");
+    FileHeaderContext context = new FileHeaderContext().commentLines(lines);
+
     FileContext fileContext = new FileContext().file(file);
     assertTrue(underTest.accepts(fileContext, context));
     underTest.apply(fileContext, context);
 
-    assertTrue(StringUtils.contains(FileUtils.readFileToString(file), "# a\n# b\n# c\n"));
+    assertTrue(StringUtils.contains(FileUtils.readFileToString(file),
+        "# Der Jodelkaiser aus dem Oetztal ist wieder daheim."));
+
+    FileHeaderContext extractContext = underTest.extract(fileContext);
+    assertEquals(ImmutableList.of("Der Jodelkaiser aus dem Oetztal ist wieder daheim."), extractContext.getCommentLines());
 
     file.delete();
   }

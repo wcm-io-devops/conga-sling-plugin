@@ -19,24 +19,22 @@
  */
 package io.wcm.devops.conga.plugins.sling.postprocessor;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Dictionary;
+import java.util.List;
+
+import org.apache.commons.lang3.CharEncoding;
+import org.apache.felix.cm.file.ConfigurationHandler;
+import org.apache.sling.provisioning.model.Model;
+
 import io.wcm.devops.conga.generator.GeneratorException;
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 import io.wcm.devops.conga.plugins.sling.util.ConfigConsumer;
 import io.wcm.devops.conga.plugins.sling.util.ProvisioningUtil;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Dictionary;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.CharEncoding;
-import org.apache.felix.cm.file.ConfigurationHandler;
-import org.apache.sling.provisioning.model.Model;
-import org.slf4j.Logger;
 
 /**
  * Transforms a Sling Provisioning file into OSGi configurations (ignoring all other provisioning contents).
@@ -61,20 +59,16 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
   @Override
   public List<FileContext> apply(FileContext fileContext, PostProcessorContext context) {
     File file = fileContext.getFile();
-    Logger logger = context.getLogger();
-
     try {
       // generate OSGi configurations
       Model model = ProvisioningUtil.getModel(fileContext);
-      List<File> files = generateOsgiConfigurations(model, file.getParentFile(), logger);
+      List<FileContext> files = generateOsgiConfigurations(model, file.getParentFile(), context);
 
       // delete provisioning file after transformation
       file.delete();
 
       // return list of generated osgi configuration files
-      return files.stream()
-          .map(result -> new FileContext().file(result).charset(CharEncoding.UTF_8))
-          .collect(Collectors.toList());
+      return files;
     }
     catch (IOException ex) {
       throw new GeneratorException("Unable to post-process sling provisioning OSGi configurations.", ex);
@@ -85,21 +79,22 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
    * Generate OSGi configuration for all feature and run modes.
    * @param model Provisioning Model
    * @param dir Target directory
-   * @param logger Logger
+   * @param context Post processor context
    * @throws IOException
    */
-  private List<File> generateOsgiConfigurations(Model model, File dir, Logger logger) throws IOException {
-    return ProvisioningUtil.visitOsgiConfigurations(model, new ConfigConsumer<File>() {
+  private List<FileContext> generateOsgiConfigurations(Model model, File dir, PostProcessorContext context) throws IOException {
+    return ProvisioningUtil.visitOsgiConfigurations(model, new ConfigConsumer<FileContext>() {
       @Override
-      public File accept(String path, Dictionary<String, Object> properties) throws IOException {
-        logger.info("  Generate " + path);
+      public FileContext accept(String path, Dictionary<String, Object> properties) throws IOException {
+        context.getLogger().info("  Generate " + path);
 
         File confFile = new File(dir, path);
         confFile.getParentFile().mkdirs();
         try (FileOutputStream os = new FileOutputStream(confFile)) {
           ConfigurationHandler.write(os, properties);
         }
-        return confFile;
+
+        return new FileContext().file(confFile).charset(CharEncoding.UTF_8);
       }
     });
   }

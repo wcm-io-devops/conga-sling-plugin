@@ -32,6 +32,8 @@ public interface ConfigConsumer<R> {
    * Method is called for each configuration found in provisioning model.
    * @param path Path for configuration in filesystem.
    * @param properties OSGi properties
+   * @return Result
+   * @throws IOException I/O exception
    */
   R accept(String path, Dictionary<String, Object> properties) throws IOException;
 
