@@ -99,7 +99,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
 
     // post process provisioning example
     File provisioningFile = new File(targetDir, "simpleConfig.txt");
-    FileUtils.write(provisioningFile, PROVISIONING_FILE);
+    FileUtils.write(provisioningFile, PROVISIONING_FILE, CharEncoding.UTF_8);
     postProcess(provisioningFile);
 
     // validate generated configs
@@ -118,7 +118,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
 
     // post process provisioning example
     File provisioningFile = new File(targetDir, "simpleConfigWithNewline.txt");
-    FileUtils.write(provisioningFile, PROVISIONING_FILE);
+    FileUtils.write(provisioningFile, PROVISIONING_FILE, CharEncoding.UTF_8);
     postProcess(provisioningFile);
 
     // validate generated configs
