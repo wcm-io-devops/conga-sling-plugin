@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableList;
 import io.wcm.devops.conga.generator.spi.FileHeaderPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
-import io.wcm.devops.conga.generator.util.PluginManager;
+import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
 /**
  * WARNING: Test is disabled, see {@link OsgiConfigFileHeader} javadocs.
@@ -47,7 +47,7 @@ public class OsgiConfigFileHeaderTest {
 
   @Before
   public void setUp() {
-    underTest = new PluginManager().get(OsgiConfigFileHeader.NAME, FileHeaderPlugin.class);
+    underTest = new PluginManagerImpl().get(OsgiConfigFileHeader.NAME, FileHeaderPlugin.class);
   }
 
   @Test

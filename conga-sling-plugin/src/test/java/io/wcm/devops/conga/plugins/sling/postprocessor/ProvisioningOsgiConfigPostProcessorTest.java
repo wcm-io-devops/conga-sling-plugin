@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
-import io.wcm.devops.conga.generator.util.PluginManager;
+import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
 public class ProvisioningOsgiConfigPostProcessorTest {
 
@@ -53,7 +53,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
 
   @Before
   public void setUp() throws IOException {
-    underTest = new PluginManager().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
+    underTest = new PluginManagerImpl().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
 
     // prepare target dirctory
     targetDir = new File("target/postprocessor-test_" + UUID.randomUUID().toString());
@@ -133,7 +133,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
         .file(provisioningFile)
         .charset(CharEncoding.UTF_8);
     PostProcessorContext context = new PostProcessorContext()
-        .pluginManager(new PluginManager())
+        .pluginManager(new PluginManagerImpl())
         .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
 
     assertTrue(underTest.accepts(fileContext, context));
