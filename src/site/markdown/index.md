@@ -3,6 +3,7 @@
 wcm.io DevOps CONGA Plugin for [Apache Sling][sling].
 
 This extends [CONGA][conga] with:
+
 * Manage OSGi configuration templates in [Apache Sling Provisioning][sling-provisioning] file format
 * Generate OSGi configurations in [Apache Felix Config Admin][felix-configadmin] file format
 
