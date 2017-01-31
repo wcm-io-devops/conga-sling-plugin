@@ -9,7 +9,7 @@ files:
   validators:
   - sling-provisioning
   # Post-processors apply further actions after generation the file
-  # In this case the provisionig file is transformed to single OSGi config files
+  # In this case the provisioning file is transformed to single OSGi config files
   postProcessors:
   - sling-provisioning-osgiconfig
 

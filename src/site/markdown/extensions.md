@@ -12,6 +12,8 @@ File plugins:
 | `osgi-config`        | .config             | X           |           | X        |                |
 | `sling-provisioning` | .provisioning, .txt | X           | X         | X        | X              |
 
+Please note: Files with the extension `txt` are only managed as provisioning files if the contain the string `[feature `.
+
 
 ### Sling Provisioning Files
 
