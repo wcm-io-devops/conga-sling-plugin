@@ -100,7 +100,7 @@ public final class OsgiConfigFileHeader extends AbstractFileHeader {
       }
     }
     catch (IOException ex) {
-      throw new GeneratorException("Unable parse add file header from " + FileUtil.getCanonicalPath(file), ex);
+      throw new GeneratorException("Unable parse add file header from " + file.getCanonicalPath(), ex);
     }
     return null;
   }

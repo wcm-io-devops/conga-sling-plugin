@@ -27,7 +27,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import io.wcm.devops.conga.generator.spi.handlebars.EscapingStrategyPlugin;
-import io.wcm.devops.conga.generator.util.PluginManager;
+import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
 public class OsgiConfigEscapingStrategyTest {
 
@@ -35,7 +35,7 @@ public class OsgiConfigEscapingStrategyTest {
 
   @Before
   public void setUp() {
-    underTest = new PluginManager().get(OsgiConfigEscapingStrategy.NAME, EscapingStrategyPlugin.class);
+    underTest = new PluginManagerImpl().get(OsgiConfigEscapingStrategy.NAME, EscapingStrategyPlugin.class);
   }
 
   @Test
