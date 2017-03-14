@@ -25,6 +25,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -146,7 +147,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
   private Dictionary<?, ?> readConfig(String fileName) throws IOException {
     assertExists(fileName);
     File file = new File(targetDir, fileName);
-    try (InputStream is = new FileInputStream(file)) {
+    try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
       return ConfigurationHandler.read(is);
     }
   }
