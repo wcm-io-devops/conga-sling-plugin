@@ -19,6 +19,7 @@
  */
 package io.wcm.devops.conga.plugins.sling.util;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,7 +90,7 @@ public final class ProvisioningUtil {
    * @throws IOException I/O exception
    */
   public static Model getModel(FileContext file) throws IOException {
-    try (InputStream is = new FileInputStream(file.getFile());
+    try (InputStream is = new BufferedInputStream(new FileInputStream(file.getFile()));
         Reader reader = new InputStreamReader(is, file.getCharset())) {
       Model model = ModelReader.read(reader, null);
       model = ModelUtility.getEffectiveModel(model, new ResolverOptions());
