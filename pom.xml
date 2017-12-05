@@ -35,6 +35,13 @@
   <name>CONGA Sling Plugin</name>
   <description>Root POM for wcm.io CONGA Plugins for Apache Sling.</description>
 
+  <scm>
+    <connection>scm:git:https://github.com/wcm-io-devops/conga-sling-plugin.git</connection>
+    <developerConnection>scm:git:https://github.com/wcm-io-devops/conga-sling-plugin.git</developerConnection>
+    <url>https://github.com/wcm-io-devops/conga-sling-plugin</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <properties>
     <site.url.module.prefix>conga/plugins/sling</site.url.module.prefix>
   </properties>
