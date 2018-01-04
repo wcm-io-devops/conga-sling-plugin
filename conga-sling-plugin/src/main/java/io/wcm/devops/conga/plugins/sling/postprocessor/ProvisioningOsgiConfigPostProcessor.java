@@ -22,10 +22,10 @@ package io.wcm.devops.conga.plugins.sling.postprocessor;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
 import java.util.List;
 
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.felix.cm.file.ConfigurationHandler;
 import org.apache.sling.provisioning.model.Model;
 
@@ -94,7 +94,7 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
           ConfigurationHandler.write(os, properties);
         }
 
-        return new FileContext().file(confFile).charset(CharEncoding.UTF_8);
+        return new FileContext().file(confFile).charset(StandardCharsets.UTF_8);
       }
     });
   }

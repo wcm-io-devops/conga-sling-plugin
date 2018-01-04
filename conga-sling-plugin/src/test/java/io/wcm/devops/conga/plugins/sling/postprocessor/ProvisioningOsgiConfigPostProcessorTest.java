@@ -30,11 +30,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
 import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.felix.cm.file.ConfigurationHandler;
 import org.junit.After;
 import org.junit.Before;
@@ -100,7 +100,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
 
     // post process provisioning example
     File provisioningFile = new File(targetDir, "simpleConfig.txt");
-    FileUtils.write(provisioningFile, PROVISIONING_FILE, CharEncoding.UTF_8);
+    FileUtils.write(provisioningFile, PROVISIONING_FILE, StandardCharsets.UTF_8);
     postProcess(provisioningFile);
 
     // validate generated configs
@@ -119,7 +119,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
 
     // post process provisioning example
     File provisioningFile = new File(targetDir, "simpleConfigWithNewline.txt");
-    FileUtils.write(provisioningFile, PROVISIONING_FILE, CharEncoding.UTF_8);
+    FileUtils.write(provisioningFile, PROVISIONING_FILE, StandardCharsets.UTF_8);
     postProcess(provisioningFile);
 
     // validate generated configs
@@ -132,7 +132,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     // post-process
     FileContext fileContext = new FileContext()
         .file(provisioningFile)
-        .charset(CharEncoding.UTF_8);
+        .charset(StandardCharsets.UTF_8);
     PostProcessorContext context = new PostProcessorContext()
         .pluginManager(new PluginManagerImpl())
         .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));

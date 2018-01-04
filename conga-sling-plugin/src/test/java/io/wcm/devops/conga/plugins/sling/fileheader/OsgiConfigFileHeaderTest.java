@@ -23,10 +23,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,7 +53,7 @@ public class OsgiConfigFileHeaderTest {
   @Test
   public void testApply() throws Exception {
     File file = new File("target/generation-test/fileHeader.config");
-    FileUtils.write(file, "myscript", CharEncoding.UTF_8);
+    FileUtils.write(file, "myscript", StandardCharsets.UTF_8);
 
     List<String> lines = ImmutableList.of("**********", "", "Der Jodelkaiser", "aus dem Oetztal", "ist wieder daheim.", "**********");
     FileHeaderContext context = new FileHeaderContext().commentLines(lines);
@@ -62,7 +62,7 @@ public class OsgiConfigFileHeaderTest {
     assertTrue(underTest.accepts(fileContext, context));
     underTest.apply(fileContext, context);
 
-    assertTrue(StringUtils.contains(FileUtils.readFileToString(file, CharEncoding.UTF_8),
+    assertTrue(StringUtils.contains(FileUtils.readFileToString(file, StandardCharsets.UTF_8),
         "# Der Jodelkaiser aus dem Oetztal ist wieder daheim."));
 
     FileHeaderContext extractContext = underTest.extract(fileContext);
