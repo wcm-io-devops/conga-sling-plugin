@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
 
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
+import io.wcm.devops.conga.generator.spi.context.PluginContextOptions;
 import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
@@ -133,9 +134,11 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     FileContext fileContext = new FileContext()
         .file(provisioningFile)
         .charset(StandardCharsets.UTF_8);
-    PostProcessorContext context = new PostProcessorContext()
+    PluginContextOptions pluginContextOptions = new PluginContextOptions()
         .pluginManager(new PluginManagerImpl())
         .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
+    PostProcessorContext context = new PostProcessorContext()
+        .pluginContextOptions(pluginContextOptions);
 
     assertTrue(underTest.accepts(fileContext, context));
     underTest.apply(fileContext, context);
