@@ -29,6 +29,7 @@ import org.apache.commons.text.translate.CharSequenceTranslator;
 import org.apache.commons.text.translate.LookupTranslator;
 
 import io.wcm.devops.conga.generator.spi.handlebars.EscapingStrategyPlugin;
+import io.wcm.devops.conga.generator.spi.handlebars.context.EscapingStrategyContext;
 import io.wcm.devops.conga.generator.util.FileUtil;
 
 /**
@@ -85,12 +86,12 @@ public class OsgiConfigEscapingStrategy implements EscapingStrategyPlugin {
   }
 
   @Override
-  public boolean accepts(String fileExtension) {
+  public boolean accepts(String fileExtension, EscapingStrategyContext pluginContext) {
     return FileUtil.matchesExtension(fileExtension, FILE_EXTENSION);
   }
 
   @Override
-  public String escape(CharSequence value) {
+  public String escape(CharSequence value, EscapingStrategyContext pluginContext) {
     return value == null ? null : ESCAPE_OSGI_CONFIG.translate(value);
   }
 

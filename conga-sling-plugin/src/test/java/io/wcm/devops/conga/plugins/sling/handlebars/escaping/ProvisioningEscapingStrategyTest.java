@@ -40,14 +40,14 @@ public class ProvisioningEscapingStrategyTest {
 
   @Test
   public void testValid() {
-    assertTrue(underTest.accepts("provisioning"));
-    assertEquals("\\ \\\"\\\\", underTest.escape(" \"\\"));
-    assertEquals("äöüß€/", underTest.escape("äöüß€/"));
+    assertTrue(underTest.accepts("provisioning", null));
+    assertEquals("\\ \\\"\\\\", underTest.escape(" \"\\", null));
+    assertEquals("äöüß€/", underTest.escape("äöüß€/", null));
   }
 
   @Test
   public void testInvalid() {
-    assertFalse(underTest.accepts("txt"));
+    assertFalse(underTest.accepts("txt", null));
   }
 
 }

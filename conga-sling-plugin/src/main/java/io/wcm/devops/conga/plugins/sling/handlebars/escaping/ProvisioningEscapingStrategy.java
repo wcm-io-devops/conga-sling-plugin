@@ -20,6 +20,7 @@
 package io.wcm.devops.conga.plugins.sling.handlebars.escaping;
 
 import io.wcm.devops.conga.generator.spi.handlebars.EscapingStrategyPlugin;
+import io.wcm.devops.conga.generator.spi.handlebars.context.EscapingStrategyContext;
 import io.wcm.devops.conga.generator.util.FileUtil;
 import io.wcm.devops.conga.plugins.sling.util.ProvisioningUtil;
 
@@ -39,13 +40,13 @@ public class ProvisioningEscapingStrategy implements EscapingStrategyPlugin {
   }
 
   @Override
-  public boolean accepts(String fileExtension) {
+  public boolean accepts(String fileExtension, EscapingStrategyContext pluginContext) {
     // currently only provisioning files with explicit extension are supported, not with "txt"
     return FileUtil.matchesExtension(fileExtension, ProvisioningUtil.FILE_EXTENSION);
   }
 
   @Override
-  public String escape(CharSequence value) {
+  public String escape(CharSequence value, EscapingStrategyContext pluginContext) {
     // use same escaping rules as for OSGi configurations
     return value == null ? null : OsgiConfigEscapingStrategy.ESCAPE_OSGI_CONFIG.translate(value);
   }
