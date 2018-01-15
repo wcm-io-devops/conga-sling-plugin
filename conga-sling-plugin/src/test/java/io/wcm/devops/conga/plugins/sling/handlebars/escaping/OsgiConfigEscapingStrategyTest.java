@@ -40,21 +40,21 @@ public class OsgiConfigEscapingStrategyTest {
 
   @Test
   public void testValid() {
-    assertTrue(underTest.accepts("config"));
+    assertTrue(underTest.accepts("config", null));
   }
 
   @Test
   public void testInvalid() {
-    assertFalse(underTest.accepts("txt"));
+    assertFalse(underTest.accepts("txt", null));
   }
 
   @Test
   public void testEscape() {
-    assertEquals("\\ \\\"\\\\", underTest.escape(" \"\\"));
-    assertEquals("äöüß€/", underTest.escape("äöüß€/"));
-    assertEquals("aa\\=bb", underTest.escape("aa=bb"));
-    assertEquals("\\b\\t\\n\\f\\r", underTest.escape("\b\t\n\f\r"));
-    assertEquals("ab\\u0005c\\u0006", underTest.escape("ab\u0005c\u0006"));
+    assertEquals("\\ \\\"\\\\", underTest.escape(" \"\\", null));
+    assertEquals("äöüß€/", underTest.escape("äöüß€/", null));
+    assertEquals("aa\\=bb", underTest.escape("aa=bb", null));
+    assertEquals("\\b\\t\\n\\f\\r", underTest.escape("\b\t\n\f\r", null));
+    assertEquals("ab\\u0005c\\u0006", underTest.escape("ab\u0005c\u0006", null));
   }
 
 }

@@ -23,8 +23,8 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.nio.charset.StandardCharsets;
 
-import org.apache.commons.lang3.CharEncoding;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,7 +45,7 @@ public class ProvisioningValidatorTest {
   @Test
   public void testValid() throws Exception {
     File file = new File(getClass().getResource("/validProvisioning.txt").toURI());
-    FileContext fileContext = new FileContext().file(file).charset(CharEncoding.UTF_8);
+    FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
     underTest.apply(fileContext, null);
   }
@@ -53,7 +53,7 @@ public class ProvisioningValidatorTest {
   @Test(expected = ValidationException.class)
   public void testInvalid() throws Exception {
     File file = new File(getClass().getResource("/invalidProvisioning.txt").toURI());
-    FileContext fileContext = new FileContext().file(file).charset(CharEncoding.UTF_8);
+    FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
     underTest.apply(fileContext, null);
   }
@@ -61,7 +61,7 @@ public class ProvisioningValidatorTest {
   @Test
   public void testInvalidFileExtension() throws Exception {
     File file = new File(getClass().getResource("/noProvisioning.txt").toURI());
-    FileContext fileContext = new FileContext().file(file).charset(CharEncoding.UTF_8);
+    FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertFalse(underTest.accepts(fileContext, null));
   }
 
