@@ -19,14 +19,15 @@
  */
 package io.wcm.devops.conga.plugins.sling.validator;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import io.wcm.devops.conga.generator.spi.ValidationException;
 import io.wcm.devops.conga.generator.spi.ValidatorPlugin;
@@ -37,7 +38,7 @@ public class ProvisioningValidatorTest {
 
   private ValidatorPlugin underTest;
 
-  @Before
+  @BeforeEach
   public void setUp() {
     underTest = new PluginManagerImpl().get(ProvisioningValidator.NAME, ValidatorPlugin.class);
   }
@@ -50,12 +51,14 @@ public class ProvisioningValidatorTest {
     underTest.apply(fileContext, null);
   }
 
-  @Test(expected = ValidationException.class)
+  @Test
   public void testInvalid() throws Exception {
     File file = new File(getClass().getResource("/invalidProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
-    underTest.apply(fileContext, null);
+    assertThrows(ValidationException.class, () -> {
+      underTest.apply(fileContext, null);
+    });
   }
 
   @Test
