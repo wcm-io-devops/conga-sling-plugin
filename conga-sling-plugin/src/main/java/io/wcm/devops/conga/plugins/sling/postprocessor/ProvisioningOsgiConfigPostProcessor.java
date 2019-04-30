@@ -26,7 +26,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
 import java.util.List;
 
-import org.apache.felix.cm.file.ConfigurationHandler;
 import org.apache.sling.provisioning.model.Model;
 
 import io.wcm.devops.conga.generator.GeneratorException;
@@ -34,6 +33,7 @@ import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 import io.wcm.devops.conga.plugins.sling.util.ConfigConsumer;
+import io.wcm.devops.conga.plugins.sling.util.OsgiConfigUtil;
 import io.wcm.devops.conga.plugins.sling.util.ProvisioningUtil;
 
 /**
@@ -91,7 +91,7 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
         File confFile = new File(dir, path);
         confFile.getParentFile().mkdirs();
         try (FileOutputStream os = new FileOutputStream(confFile)) {
-          ConfigurationHandler.write(os, properties);
+          OsgiConfigUtil.write(os, properties);
         }
 
         return new FileContext().file(confFile).charset(StandardCharsets.UTF_8);
