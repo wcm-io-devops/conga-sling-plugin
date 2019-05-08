@@ -19,11 +19,11 @@
  */
 package io.wcm.devops.conga.plugins.sling.postprocessor;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -36,9 +36,9 @@ import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.felix.cm.file.ConfigurationHandler;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
@@ -53,7 +53,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
 
   private File targetDir;
 
-  @Before
+  @BeforeEach
   public void setUp() throws IOException {
     underTest = new PluginManagerImpl().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
 
@@ -64,7 +64,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     }
   }
 
-  @After
+  @AfterEach
   public void tearDown() throws IOException {
     FileUtils.deleteDirectory(targetDir);
   }
@@ -144,7 +144,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     underTest.apply(fileContext, context);
 
     // validate
-    assertFalse("Provisioning file deleted", provisioningFile.exists());
+    assertFalse(provisioningFile.exists(), "Provisioning file deleted");
   }
 
   private Dictionary<?, ?> readConfig(String fileName) throws IOException {
@@ -157,7 +157,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
 
   private void assertExists(String fileName) throws IOException {
     File file = new File(targetDir, fileName);
-    assertTrue("Config file found: " + file.getCanonicalPath(), file.exists());
+    assertTrue(file.exists(), "Config file found: " + file.getCanonicalPath());
   }
 
 }

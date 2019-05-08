@@ -22,11 +22,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
+
   <parent>
     <groupId>io.wcm.maven</groupId>
     <artifactId>io.wcm.maven.global-parent</artifactId>
-    <version>19</version>
+    <version>25</version>
     <relativePath/>
   </parent>
 
@@ -37,7 +37,7 @@
 
   <name>CONGA Sling Plugin Example</name>
   <description>Example definitions and templates.</description>
-  
+
   <build>
 
     <plugins>
@@ -45,15 +45,15 @@
       <plugin>
         <groupId>io.wcm.devops.conga</groupId>
         <artifactId>conga-maven-plugin</artifactId>
-        <version>1.5.0</version>
+        <version>1.11.0</version>
         <extensions>true</extensions>
         <dependencies>
 
           <!-- Activate further CONGA plugins for special file types -->
           <dependency>
             <groupId>io.wcm.devops.conga.plugins</groupId>
-            <artifactId>io.wcm.devops.conga.plugins.sling</artifactId>            
-            <version>1.2.3-SNAPSHOT</version>
+            <artifactId>io.wcm.devops.conga.plugins.sling</artifactId>
+            <version>1.2.5-SNAPSHOT</version>
           </dependency>
 
         </dependencies>
