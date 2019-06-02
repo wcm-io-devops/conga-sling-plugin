@@ -23,7 +23,7 @@ This plugin extends [CONGA][conga] with:
 
 ### Further Resources
 
-* [wcm.io CONGA training material with exercises](http://training.wcm.io/conga/)
+* [wcm.io CONGA training material with exercises](https://training.wcm.io/conga/)
 * [adaptTo() 2015 Talk: CONGA - Configuration generation for Sling and AEM](https://adapt.to/2015/en/schedule/conga---configuration-generation-for-sling-and-aem.html)
 * [adaptTo() 2017 Talk: Automate AEM Deployment with Ansible and wcm.io CONGA](https://adapt.to/2017/en/schedule/automate-aem-deployment-with-ansible-and-wcm-io-conga.html)
 
@@ -33,7 +33,7 @@ This plugin extends [CONGA][conga] with:
 [extensions]: extensions.html
 [apidocs]: conga-sling-plugin/apidocs/
 [changelog]: changes-report.html
-[conga]: http://devops.wcm.io/conga/
+[conga]: https://devops.wcm.io/conga/
 [sling]: http://sling.apache.org/
 [sling-provisioning]: https://sling.apache.org/documentation/development/slingstart.html
 [felix-configadmin]: http://felix.apache.org/documentation/subprojects/apache-felix-config-admin.html
