@@ -80,7 +80,6 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
    * @param model Provisioning Model
    * @param dir Target directory
    * @param context Post processor context
-   * @throws IOException
    */
   private List<FileContext> generateOsgiConfigurations(Model model, File dir, PostProcessorContext context) throws IOException {
     return ProvisioningUtil.visitOsgiConfigurations(model, new ConfigConsumer<FileContext>() {
