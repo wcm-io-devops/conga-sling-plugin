@@ -66,7 +66,7 @@ import org.apache.felix.cm.file.FilePersistenceManager;
  * </pre>
  */
 //CHECKSTYLE:OFF
-@SuppressWarnings({ "unchecked", "unused", "javadoc" })
+@SuppressWarnings({ "unchecked", "unused", "javadoc", "PMD" })
 class ConfigurationHandler_ConfigAdmin184 {
 
   protected static final String ENCODING = "UTF-8";
