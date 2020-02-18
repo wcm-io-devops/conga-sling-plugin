@@ -26,6 +26,11 @@ Map config = [
     (MAVEN): [
       (MAVEN_GOALS): ["clean", "deploy", "site-deploy"],
     ]
+  ],
+  (STAGE_FEATURE_PREPARATION): [
+    (STAGE_FEATURE_PREPARATION_MERGE): [
+      (STAGE_FEATURE_PREPARATION_MERGE_ENABLED): false
+    ]
   ]
 ]
 
