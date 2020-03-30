@@ -47,14 +47,14 @@ import io.wcm.devops.conga.generator.spi.context.PluginContextOptions;
 import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
-public class ProvisioningOsgiConfigPostProcessorTest {
+class ProvisioningOsgiConfigPostProcessorTest {
 
   private PostProcessorPlugin underTest;
 
   private File targetDir;
 
   @BeforeEach
-  public void setUp() throws IOException {
+  void setUp() throws IOException {
     underTest = new PluginManagerImpl().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
 
     // prepare target dirctory
@@ -65,12 +65,12 @@ public class ProvisioningOsgiConfigPostProcessorTest {
   }
 
   @AfterEach
-  public void tearDown() throws IOException {
+  void tearDown() throws IOException {
     FileUtils.deleteDirectory(targetDir);
   }
 
   @Test
-  public void testProvisioningExample() throws Exception {
+  void testProvisioningExample() throws Exception {
 
     // post process example valid provisioning file
     File provisioningFile = new File(targetDir, "provisioningExample.txt");
@@ -92,7 +92,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
   }
 
   @Test
-  public void testSimpleConfig() throws Exception {
+  void testSimpleConfig() throws Exception {
     final String PROVISIONING_FILE = "[feature name=test]\n" +
         "[configurations]\n" +
         "com.example.ServiceConfiguration\n"
@@ -111,7 +111,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
   }
 
   @Test
-  public void testSimpleConfigWithNewline() throws Exception {
+  void testSimpleConfigWithNewline() throws Exception {
     final String PROVISIONING_FILE = "[feature name=test]\n" +
         "[configurations]\n" +
         "com.example.ServiceConfiguration\n"
@@ -130,7 +130,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
   }
 
   @Test
-  public void testEscapedVariable() throws Exception {
+  void testEscapedVariable() throws Exception {
 
     // post process example valid provisioning file
     File provisioningFile = new File(targetDir, "provisioningExample.txt");

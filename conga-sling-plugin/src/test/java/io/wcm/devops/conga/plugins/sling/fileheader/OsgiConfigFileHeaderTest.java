@@ -41,17 +41,17 @@ import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 /**
  * WARNING: Test is disabled, see {@link OsgiConfigFileHeader} javadocs.
  */
-public class OsgiConfigFileHeaderTest {
+class OsgiConfigFileHeaderTest {
 
   private FileHeaderPlugin underTest;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     underTest = new PluginManagerImpl().get(OsgiConfigFileHeader.NAME, FileHeaderPlugin.class);
   }
 
   @Test
-  public void testApply() throws Exception {
+  void testApply() throws Exception {
     File file = new File("target/generation-test/fileHeader.config");
     FileUtils.write(file, "myscript", StandardCharsets.UTF_8);
 
