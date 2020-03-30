@@ -46,6 +46,11 @@ public class ProvisioningEscapingStrategyTest {
   }
 
   @Test
+  public void testEscapeVariables() {
+    assertEquals("\\${var1}\\ and\\ \\${var2}", underTest.escape("${var1} and ${var2}", null));
+  }
+
+  @Test
   public void testInvalid() {
     assertFalse(underTest.accepts("txt", null));
   }

@@ -34,7 +34,7 @@ import io.wcm.devops.conga.generator.spi.ValidatorPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
-public class ProvisioningValidatorTest {
+class ProvisioningValidatorTest {
 
   private ValidatorPlugin underTest;
 
@@ -66,6 +66,14 @@ public class ProvisioningValidatorTest {
     File file = new File(getClass().getResource("/noProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertFalse(underTest.accepts(fileContext, null));
+  }
+
+  @Test
+  void testEscapedVariable() throws Exception {
+    File file = new File(getClass().getResource("/validProvisioningEscapedVariable.txt").toURI());
+    FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
+    assertTrue(underTest.accepts(fileContext, null));
+    underTest.apply(fileContext, null);
   }
 
 }

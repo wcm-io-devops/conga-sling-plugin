@@ -129,6 +129,19 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     assertEquals("foo", config.get("foo"));
   }
 
+  @Test
+  public void testEscapedVariable() throws Exception {
+
+    // post process example valid provisioning file
+    File provisioningFile = new File(targetDir, "provisioningExample.txt");
+    FileUtils.copyFile(new File(getClass().getResource("/validProvisioningEscapedVariable.txt").toURI()), provisioningFile);
+    postProcess(provisioningFile);
+
+    // validate generated configs
+    Dictionary<?, ?> config = readConfig("my.pid.config");
+    assertEquals("${var1} and ${var2}", config.get("stringProperty"));
+  }
+
   private void postProcess(File provisioningFile) {
     // post-process
     FileContext fileContext = new FileContext()

@@ -1,0 +1,6 @@
+[feature name=test]
+
+[configurations]
+
+  my.pid
+    stringProperty="\${var1} and \${var2}"
