@@ -32,13 +32,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.felix.cm.file.ConfigurationHandler;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.slf4j.LoggerFactory;
 
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
@@ -54,19 +53,14 @@ class ProvisioningOsgiConfigPostProcessorTest {
   private File targetDir;
 
   @BeforeEach
-  void setUp() throws IOException {
+  void setUp(TestInfo testInfo) throws IOException {
     underTest = new PluginManagerImpl().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
 
     // prepare target dirctory
-    targetDir = new File("target/postprocessor-test_" + UUID.randomUUID().toString());
+    targetDir = new File("target/postprocessor-test_" + testInfo.getDisplayName());
     if (targetDir.exists()) {
       FileUtils.deleteDirectory(targetDir);
     }
-  }
-
-  @AfterEach
-  void tearDown() throws IOException {
-    FileUtils.deleteDirectory(targetDir);
   }
 
   @Test
@@ -89,6 +83,17 @@ class ProvisioningOsgiConfigPostProcessorTest {
     assertExists("my.factory-my.pid.config");
     assertExists("mode1/my.factory-my.pid2.config");
     assertExists("mode2/my.pid2.config");
+
+    // validate repoinit statements
+    config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-test.config");
+    assertArrayEquals(new String[] {"create path /repoinit/test1\n" +
+        "create path /repoinit/test2\n" }, (String[])config.get("scripts"));
+
+    config = readConfig("mode1/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1.config");
+    assertArrayEquals(new String[] { "create service user mode1\n" }, (String[])config.get("scripts"));
+
+    config = readConfig("mode1.mode2/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1-mode2.config");
+    assertArrayEquals(new String[] { "create service user mode1_mode2" }, (String[])config.get("scripts"));
   }
 
   @Test

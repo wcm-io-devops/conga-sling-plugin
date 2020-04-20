@@ -38,6 +38,7 @@ import org.apache.sling.provisioning.model.Model;
 import org.apache.sling.provisioning.model.ModelUtility;
 import org.apache.sling.provisioning.model.ModelUtility.ResolverOptions;
 import org.apache.sling.provisioning.model.RunMode;
+import org.apache.sling.provisioning.model.Section;
 import org.apache.sling.provisioning.model.io.ModelReader;
 
 import com.google.common.collect.ImmutableList;
@@ -59,6 +60,9 @@ public final class ProvisioningUtil {
    * Alternative "txt" file extension for provisioning files, which is currently used officially.
    */
   public static final String TEXT_FILE_EXTENSION = "txt";
+
+  private static final String REPOINIT_SECTION = "repoinit";
+  private static final String REPOINIT_PID = "org.apache.sling.jcr.repoinit.RepositoryInitializer";
 
   private ProvisioningUtil() {
     // static methods only
@@ -109,6 +113,8 @@ public final class ProvisioningUtil {
   public static <R> List<R> visitOsgiConfigurations(Model model, ConfigConsumer<R> consumer) throws IOException {
     List<R> results = new ArrayList<>();
     for (Feature feature : model.getFeatures()) {
+
+      // OSGi configurations
       for (RunMode runMode : feature.getRunModes()) {
         for (Configuration configuration : runMode.getConfigurations()) {
           String path = getPathForConfiguration(configuration, runMode);
@@ -118,6 +124,38 @@ public final class ProvisioningUtil {
           }
         }
       }
+
+      // repoinit statements
+      for (Section section : feature.getAdditionalSections(REPOINIT_SECTION)) {
+
+        // repoinit script
+        String script = section.getContents();
+        if (StringUtils.isBlank(script)) {
+          continue;
+        }
+
+        // associated run modes
+        String runModesString = section.getAttributes().get("runModes");
+        RunMode runMode;
+        if (runModesString != null) {
+          runMode = new RunMode(StringUtils.split(runModesString, ","));
+        }
+        else {
+          runMode = new RunMode(null);
+        }
+
+        // prepare repoinit OSGi configuration
+        String pid = StringUtils.defaultString(feature.getName(), "conga")
+            + (runModesString != null ? "-" + StringUtils.replace(runModesString, ",", "-") : "");
+        Configuration configuration = new Configuration(pid, REPOINIT_PID);
+        configuration.getProperties().put("scripts", new String[] { script });
+        String path = getPathForConfiguration(configuration, runMode);
+        R result = consumer.accept(path, configuration.getProperties());
+        if (result != null) {
+          results.add(result);
+        }
+      }
+
     }
     return results;
   }
