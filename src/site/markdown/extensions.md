@@ -22,5 +22,5 @@ The Sling Provisioning Model file format is described on the [Sling Website][sli
 You can use a Handlebars template to generate a provisioning file. When the post processor `sling-provisioning` is applied to this file the single Felix OSGi .config files are generated out of it and the provisioning file is deleted.
 
 
-[conga-extensibility]: http://devops.wcm.io/conga/extensibility.html
+[conga-extensibility]: https://devops.wcm.io/conga/extensibility.html
 [sling-slingstart]: https://sling.apache.org/documentation/development/slingstart.html

@@ -42,6 +42,8 @@ import java.util.Map;
 
 import org.apache.felix.cm.file.FilePersistenceManager;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /*
  * This file is COPIED from the sources of org.apache.felix.configadmin 1.8.4
  * to write the configuration using the old (single line) array style, which is required to support
@@ -66,7 +68,8 @@ import org.apache.felix.cm.file.FilePersistenceManager;
  * </pre>
  */
 //CHECKSTYLE:OFF
-@SuppressWarnings({ "unchecked", "unused", "javadoc" })
+@SuppressWarnings({ "unchecked", "unused", "javadoc", "PMD" })
+@SuppressFBWarnings({ "PERFORMANCE", "STYLE" })
 class ConfigurationHandler_ConfigAdmin184 {
 
   protected static final String ENCODING = "UTF-8";

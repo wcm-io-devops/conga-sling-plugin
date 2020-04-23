@@ -38,17 +38,17 @@ import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
 import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
-public class ProvisioningFileHeaderTest {
+class ProvisioningFileHeaderTest {
 
   private FileHeaderPlugin underTest;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     underTest = new PluginManagerImpl().get(ProvisioningFileHeader.NAME, FileHeaderPlugin.class);
   }
 
   @Test
-  public void testApply() throws Exception {
+  void testApply() throws Exception {
     File file = new File("target/generation-test/fileHeader.txt");
     FileUtils.copyFile(new File(getClass().getResource("/validProvisioning.txt").toURI()), file);
 

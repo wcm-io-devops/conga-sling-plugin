@@ -8,4 +8,4 @@ https://github.com/wcm-io-devops/conga-sling-plugin
 In a subdirectory `example`.
 
 
-[conga-usage]: http://devops.wcm.io/conga/usage.html
+[conga-usage]: https://devops.wcm.io/conga/usage.html

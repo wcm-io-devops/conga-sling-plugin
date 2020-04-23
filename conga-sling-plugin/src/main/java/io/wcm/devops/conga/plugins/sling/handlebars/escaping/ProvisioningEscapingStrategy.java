@@ -19,6 +19,9 @@
  */
 package io.wcm.devops.conga.plugins.sling.handlebars.escaping;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import io.wcm.devops.conga.generator.spi.handlebars.EscapingStrategyPlugin;
 import io.wcm.devops.conga.generator.spi.handlebars.context.EscapingStrategyContext;
 import io.wcm.devops.conga.generator.util.FileUtil;
@@ -34,6 +37,8 @@ public class ProvisioningEscapingStrategy implements EscapingStrategyPlugin {
    */
   public static final String NAME = "sling-provisioning";
 
+  private static final Pattern VARIABLE_PATTERN = Pattern.compile("\\$\\{([^\\{\\}]+)\\}");
+
   @Override
   public String getName() {
     return NAME;
@@ -47,8 +52,22 @@ public class ProvisioningEscapingStrategy implements EscapingStrategyPlugin {
 
   @Override
   public String escape(CharSequence value, EscapingStrategyContext pluginContext) {
+    if (value == null) {
+      return null;
+    }
+
     // use same escaping rules as for OSGi configurations
-    return value == null ? null : OsgiConfigEscapingStrategy.ESCAPE_OSGI_CONFIG.translate(value);
+    String escapedValue = OsgiConfigEscapingStrategy.ESCAPE_OSGI_CONFIG.translate(value);
+
+    // escape variables ${...} with \${...} - otherwise lead to "Unknown variable" error when validating sling provisioning file
+    StringBuffer result = new StringBuffer();
+    Matcher matcher = VARIABLE_PATTERN.matcher(escapedValue);
+    while (matcher.find()) {
+      matcher.appendReplacement(result, "\\\\\\$\\{" + matcher.group(1) + "\\}");
+    }
+    matcher.appendTail(result);
+
+    return result.toString();
   }
 
 }

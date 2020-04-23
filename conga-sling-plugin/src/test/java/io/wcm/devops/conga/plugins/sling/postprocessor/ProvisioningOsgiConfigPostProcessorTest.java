@@ -32,13 +32,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
-import java.util.UUID;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.felix.cm.file.ConfigurationHandler;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.slf4j.LoggerFactory;
 
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
@@ -47,30 +46,25 @@ import io.wcm.devops.conga.generator.spi.context.PluginContextOptions;
 import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
-public class ProvisioningOsgiConfigPostProcessorTest {
+class ProvisioningOsgiConfigPostProcessorTest {
 
   private PostProcessorPlugin underTest;
 
   private File targetDir;
 
   @BeforeEach
-  public void setUp() throws IOException {
+  void setUp(TestInfo testInfo) throws IOException {
     underTest = new PluginManagerImpl().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
 
     // prepare target dirctory
-    targetDir = new File("target/postprocessor-test_" + UUID.randomUUID().toString());
+    targetDir = new File("target/postprocessor-test_" + testInfo.getDisplayName());
     if (targetDir.exists()) {
       FileUtils.deleteDirectory(targetDir);
     }
   }
 
-  @AfterEach
-  public void tearDown() throws IOException {
-    FileUtils.deleteDirectory(targetDir);
-  }
-
   @Test
-  public void testProvisioningExample() throws Exception {
+  void testProvisioningExample() throws Exception {
 
     // post process example valid provisioning file
     File provisioningFile = new File(targetDir, "provisioningExample.txt");
@@ -89,10 +83,21 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     assertExists("my.factory-my.pid.config");
     assertExists("mode1/my.factory-my.pid2.config");
     assertExists("mode2/my.pid2.config");
+
+    // validate repoinit statements
+    config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-test.config");
+    assertArrayEquals(new String[] {"create path /repoinit/test1\n" +
+        "create path /repoinit/test2\n" }, (String[])config.get("scripts"));
+
+    config = readConfig("mode1/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1.config");
+    assertArrayEquals(new String[] { "create service user mode1\n" }, (String[])config.get("scripts"));
+
+    config = readConfig("mode1.mode2/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1-mode2.config");
+    assertArrayEquals(new String[] { "create service user mode1_mode2" }, (String[])config.get("scripts"));
   }
 
   @Test
-  public void testSimpleConfig() throws Exception {
+  void testSimpleConfig() throws Exception {
     final String PROVISIONING_FILE = "[feature name=test]\n" +
         "[configurations]\n" +
         "com.example.ServiceConfiguration\n"
@@ -111,7 +116,7 @@ public class ProvisioningOsgiConfigPostProcessorTest {
   }
 
   @Test
-  public void testSimpleConfigWithNewline() throws Exception {
+  void testSimpleConfigWithNewline() throws Exception {
     final String PROVISIONING_FILE = "[feature name=test]\n" +
         "[configurations]\n" +
         "com.example.ServiceConfiguration\n"
@@ -127,6 +132,19 @@ public class ProvisioningOsgiConfigPostProcessorTest {
     Dictionary<?, ?> config = readConfig("com.example.ServiceConfiguration.config");
     assertNull(config.get("bar"));
     assertEquals("foo", config.get("foo"));
+  }
+
+  @Test
+  void testEscapedVariable() throws Exception {
+
+    // post process example valid provisioning file
+    File provisioningFile = new File(targetDir, "provisioningExample.txt");
+    FileUtils.copyFile(new File(getClass().getResource("/validProvisioningEscapedVariable.txt").toURI()), provisioningFile);
+    postProcess(provisioningFile);
+
+    // validate generated configs
+    Dictionary<?, ?> config = readConfig("my.pid.config");
+    assertEquals("${var1} and ${var2}", config.get("stringProperty"));
   }
 
   private void postProcess(File provisioningFile) {

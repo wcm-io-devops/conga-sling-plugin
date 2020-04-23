@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.sling.provisioning.model.Model;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.wcm.devops.conga.generator.GeneratorException;
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
@@ -57,6 +58,7 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
   }
 
   @Override
+  @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
   public List<FileContext> apply(FileContext fileContext, PostProcessorContext context) {
     File file = fileContext.getFile();
     try {
@@ -80,11 +82,11 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
    * @param model Provisioning Model
    * @param dir Target directory
    * @param context Post processor context
-   * @throws IOException
    */
   private List<FileContext> generateOsgiConfigurations(Model model, File dir, PostProcessorContext context) throws IOException {
     return ProvisioningUtil.visitOsgiConfigurations(model, new ConfigConsumer<FileContext>() {
       @Override
+      @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
       public FileContext accept(String path, Dictionary<String, Object> properties) throws IOException {
         context.getLogger().info("  Generate " + path);
 

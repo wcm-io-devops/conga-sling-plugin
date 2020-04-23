@@ -19,19 +19,19 @@
   #L%
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.wcm.devops</groupId>
     <artifactId>io.wcm.devops.parent_toplevel</artifactId>
-    <version>1.1.4</version>
+    <version>1.2.2</version>
     <relativePath />
   </parent>
 
   <groupId>io.wcm.devops.conga.plugins</groupId>
   <artifactId>io.wcm.devops.conga.plugins.sling</artifactId>
-  <version>1.2.6</version>
+  <version>1.3.0</version>
   <packaging>jar</packaging>
 
   <name>CONGA Sling Plugin</name>
@@ -62,14 +62,14 @@
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.configadmin</artifactId>
       <!-- Support latest config file format for reading, stick with version 1.8.4 for writing (ConfigurationHandler class is copied to this plugin) -->
-      <version>1.9.14</version>
+      <version>1.9.16</version>
       <scope>compile</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.sling</groupId>
       <artifactId>org.apache.sling.provisioning.model</artifactId>
-      <version>1.8.4</version>
+      <version>1.8.6</version>
       <scope>compile</scope>
     </dependency>
 

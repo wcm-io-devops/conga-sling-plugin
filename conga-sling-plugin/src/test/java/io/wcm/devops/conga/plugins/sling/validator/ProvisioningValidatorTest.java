@@ -34,17 +34,17 @@ import io.wcm.devops.conga.generator.spi.ValidatorPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
-public class ProvisioningValidatorTest {
+class ProvisioningValidatorTest {
 
   private ValidatorPlugin underTest;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     underTest = new PluginManagerImpl().get(ProvisioningValidator.NAME, ValidatorPlugin.class);
   }
 
   @Test
-  public void testValid() throws Exception {
+  void testValid() throws Exception {
     File file = new File(getClass().getResource("/validProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
@@ -52,7 +52,7 @@ public class ProvisioningValidatorTest {
   }
 
   @Test
-  public void testInvalid() throws Exception {
+  void testInvalid() throws Exception {
     File file = new File(getClass().getResource("/invalidProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
@@ -62,10 +62,18 @@ public class ProvisioningValidatorTest {
   }
 
   @Test
-  public void testInvalidFileExtension() throws Exception {
+  void testInvalidFileExtension() throws Exception {
     File file = new File(getClass().getResource("/noProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertFalse(underTest.accepts(fileContext, null));
+  }
+
+  @Test
+  void testEscapedVariable() throws Exception {
+    File file = new File(getClass().getResource("/validProvisioningEscapedVariable.txt").toURI());
+    FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
+    assertTrue(underTest.accepts(fileContext, null));
+    underTest.apply(fileContext, null);
   }
 
 }

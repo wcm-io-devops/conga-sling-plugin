@@ -29,27 +29,27 @@ import org.junit.jupiter.api.Test;
 import io.wcm.devops.conga.generator.spi.handlebars.EscapingStrategyPlugin;
 import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
-public class OsgiConfigEscapingStrategyTest {
+class OsgiConfigEscapingStrategyTest {
 
   private EscapingStrategyPlugin underTest;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     underTest = new PluginManagerImpl().get(OsgiConfigEscapingStrategy.NAME, EscapingStrategyPlugin.class);
   }
 
   @Test
-  public void testValid() {
+  void testValid() {
     assertTrue(underTest.accepts("config", null));
   }
 
   @Test
-  public void testInvalid() {
+  void testInvalid() {
     assertFalse(underTest.accepts("txt", null));
   }
 
   @Test
-  public void testEscape() {
+  void testEscape() {
     assertEquals("\\ \\\"\\\\", underTest.escape(" \"\\", null));
     assertEquals("äöüß€/", underTest.escape("äöüß€/", null));
     assertEquals("aa\\=bb", underTest.escape("aa=bb", null));

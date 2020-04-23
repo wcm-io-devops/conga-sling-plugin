@@ -29,24 +29,29 @@ import org.junit.jupiter.api.Test;
 import io.wcm.devops.conga.generator.spi.handlebars.EscapingStrategyPlugin;
 import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
-public class ProvisioningEscapingStrategyTest {
+class ProvisioningEscapingStrategyTest {
 
   private EscapingStrategyPlugin underTest;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     underTest = new PluginManagerImpl().get(ProvisioningEscapingStrategy.NAME, EscapingStrategyPlugin.class);
   }
 
   @Test
-  public void testValid() {
+  void testValid() {
     assertTrue(underTest.accepts("provisioning", null));
     assertEquals("\\ \\\"\\\\", underTest.escape(" \"\\", null));
     assertEquals("äöüß€/", underTest.escape("äöüß€/", null));
   }
 
   @Test
-  public void testInvalid() {
+  void testEscapeVariables() {
+    assertEquals("\\${var1}\\ and\\ \\${var2}", underTest.escape("${var1} and ${var2}", null));
+  }
+
+  @Test
+  void testInvalid() {
     assertFalse(underTest.accepts("txt", null));
   }
 
