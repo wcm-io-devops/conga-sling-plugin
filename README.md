@@ -1,12 +1,12 @@
 <img src="https://wcm.io/images/favicon-16@2x.png"/> CONGA Plugin for Apache Sling
 ======
-[![Build Status](https://travis-ci.com/wcm-io-devops/conga-sling-plugin.png?branch=develop)](https://travis-ci.com/wcm-io-devops/conga-sling-plugin)
+[![Build](https://github.com/wcm-io-devops/conga-sling-plugin/workflows/Build/badge.svg?branch=develop)](https://github.com/wcm-io-devops/conga-sling-plugin/actions?query=workflow%3ABuild+branch%3Adevelop)
 [![Code Coverage](https://codecov.io/gh/wcm-io-devops/conga-sling-plugin/branch/develop/graph/badge.svg)](https://codecov.io/gh/wcm-io-devops/conga-sling-plugin)
 
 Documentation: https://devops.wcm.io/conga/plugins/sling/<br/>
 Issues: https://wcm-io.atlassian.net/projects/WDCONGA<br/>
 Wiki: https://wcm-io.atlassian.net/wiki/<br/>
-Continuous Integration: https://travis-ci.com/conga-sling-plugin<br/>
+Continuous Integration: https://github.com/wcm-io-devops/conga-sling-plugin/actions<br/>
 Commercial support: https://wcm.io/commercial-support.html
 
 
@@ -14,7 +14,7 @@ Commercial support: https://wcm.io/commercial-support.html
 
 If you want to build from sources make sure you have configured all [Maven Repositories](https://devops.wcm.io/maven.html) in your settings.xml.
 
-See [Travis Maven settings.xml](https://github.com/conga-sling-plugin/blob/master/.travis.maven-settings.xml) for an example with a full configuration.
+See [Maven Settings](https://github.com/wcm-io-devops/conga-sling-plugin/blob/develop/.maven-settings.xml) for an example with a full configuration.
 
 Then you can build using
 
