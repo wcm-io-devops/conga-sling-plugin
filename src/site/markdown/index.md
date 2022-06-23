@@ -2,7 +2,7 @@
 
 wcm.io DevOps CONGA Plugin for [Apache Sling][sling].
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.wcm.devops.conga.plugins/io.wcm.devops.conga.plugins.sling/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.wcm.devops.conga.plugins/io.wcm.devops.conga.plugins.sling)
+[![Maven Central](https://img.shields.io/maven-central/v/io.wcm.devops.conga.plugins/io.wcm.devops.conga.plugins.sling)](https://repo1.maven.org/maven2/io/wcm/devops/conga/plugins/io.wcm.devops.conga.plugins.sling)
 
 
 ### Documentation
