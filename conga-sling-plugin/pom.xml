@@ -69,7 +69,7 @@
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.configadmin</artifactId>
       <!-- Support latest config file format for reading, stick with version 1.8.4 for writing (ConfigurationHandler class is copied to this plugin) -->
-      <version>1.9.16</version>
+      <version>1.9.26</version>
       <scope>compile</scope>
     </dependency>
 
