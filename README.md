@@ -5,7 +5,7 @@
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=wcm-io-devops_conga-sling-plugin&metric=coverage)](https://sonarcloud.io/summary/new_code?id=wcm-io-devops_conga-sling-plugin)
 
 Documentation: https://devops.wcm.io/conga/plugins/sling/<br/>
-Issues: https://wcm-io.atlassian.net/projects/WDCONGA<br/>
+Issues: https://github.com/wcm-io-devops/conga-sling-plugin/issues<br/>
 Wiki: https://wcm-io.atlassian.net/wiki/<br/>
 Continuous Integration: https://github.com/wcm-io-devops/conga-sling-plugin/actions<br/>
 Commercial support: https://wcm.io/commercial-support.html
