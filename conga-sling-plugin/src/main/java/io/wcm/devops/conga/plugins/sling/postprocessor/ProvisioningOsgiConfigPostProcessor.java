@@ -88,7 +88,7 @@ public class ProvisioningOsgiConfigPostProcessor implements PostProcessorPlugin 
       @Override
       @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
       public FileContext accept(String path, Dictionary<String, Object> properties) throws IOException {
-        context.getLogger().info("  Generate " + path);
+        context.getLogger().info("  Generate {}", path);
 
         File confFile = new File(dir, path);
         confFile.getParentFile().mkdirs();

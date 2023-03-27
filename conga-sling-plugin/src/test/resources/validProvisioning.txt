@@ -23,7 +23,7 @@
   my.pid2
     stringProperty="value4"
 
-    
+
 [:repoinit]
 create path /repoinit/test1
 create path /repoinit/test2
