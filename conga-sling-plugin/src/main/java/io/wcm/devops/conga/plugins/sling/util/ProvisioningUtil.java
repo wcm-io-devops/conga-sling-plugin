@@ -27,6 +27,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -145,7 +146,7 @@ public final class ProvisioningUtil {
         }
 
         // prepare repoinit OSGi configuration
-        String pid = StringUtils.defaultString(feature.getName(), "conga")
+        String pid = Objects.toString(feature.getName(), "conga")
             + (runModesString != null ? "-" + StringUtils.replace(runModesString, ",", "-") : "");
         Configuration configuration = new Configuration(pid, REPOINIT_PID);
         configuration.getProperties().put("scripts", new String[] { script });
