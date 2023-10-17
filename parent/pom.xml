@@ -43,7 +43,7 @@
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/wcm-io/conga-sling-plugin/issues/</url>
+    <url>https://github.com/wcm-io-devops/conga-sling-plugin/issues/</url>
   </issueManagement>
 
   <build>
