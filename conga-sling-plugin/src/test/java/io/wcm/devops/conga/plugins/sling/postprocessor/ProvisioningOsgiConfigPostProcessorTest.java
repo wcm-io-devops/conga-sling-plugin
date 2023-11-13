@@ -83,6 +83,7 @@ class ProvisioningOsgiConfigPostProcessorTest {
     assertExists("my.factory-my.pid.config");
     assertExists("mode1/my.factory-my.pid2.config");
     assertExists("mode2/my.pid2.config");
+    assertExists("publish.prod/my.pid2.config");
 
     // validate repoinit statements
     config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-test.config");

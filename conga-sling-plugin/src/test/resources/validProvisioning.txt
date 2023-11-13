@@ -23,6 +23,11 @@
   my.pid2
     stringProperty="value4"
 
+[configurations runModes=publish,prod]
+
+  my.pid2
+    stringProperty="value5"
+
 
 [:repoinit]
 create path /repoinit/test1
