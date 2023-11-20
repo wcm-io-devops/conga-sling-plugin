@@ -26,7 +26,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -40,8 +42,6 @@ import org.apache.sling.provisioning.model.ModelUtility.ResolverOptions;
 import org.apache.sling.provisioning.model.RunMode;
 import org.apache.sling.provisioning.model.Section;
 import org.apache.sling.provisioning.model.io.ModelReader;
-
-import com.google.common.collect.ImmutableList;
 
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.util.FileUtil;
@@ -145,7 +145,7 @@ public final class ProvisioningUtil {
         }
 
         // prepare repoinit OSGi configuration
-        String pid = StringUtils.defaultString(feature.getName(), "conga")
+        String pid = Objects.toString(feature.getName(), "conga")
             + (runModesString != null ? "-" + StringUtils.replace(runModesString, ",", "-") : "");
         Configuration configuration = new Configuration(pid, REPOINIT_PID);
         configuration.getProperties().put("scripts", new String[] { script });
@@ -164,9 +164,9 @@ public final class ProvisioningUtil {
    * Get the relative path for a configuration
    */
   private static String getPathForConfiguration(Configuration configuration, RunMode runMode) {
-    SortedSet<String> runModesList = new TreeSet<>();
+    SortedSet<String> runModesList = new TreeSet<>(new RunModeComparator());
     if (runMode.getNames() != null) {
-      runModesList.addAll(ImmutableList.copyOf(runMode.getNames()));
+      runModesList.addAll(Arrays.asList(runMode.getNames()));
     }
 
     // run modes directory

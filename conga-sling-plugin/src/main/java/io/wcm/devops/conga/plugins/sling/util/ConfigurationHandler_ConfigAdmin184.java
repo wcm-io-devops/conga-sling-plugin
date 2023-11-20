@@ -118,24 +118,24 @@ class ConfigurationHandler_ConfigAdmin184 {
     type2Code = new HashMap();
 
     // simple (exclusive String whose type code is not written)
-    type2Code.put(Integer.class, new Integer(TOKEN_SIMPLE_INTEGER));
-    type2Code.put(Long.class, new Integer(TOKEN_SIMPLE_LONG));
-    type2Code.put(Float.class, new Integer(TOKEN_SIMPLE_FLOAT));
-    type2Code.put(Double.class, new Integer(TOKEN_SIMPLE_DOUBLE));
-    type2Code.put(Byte.class, new Integer(TOKEN_SIMPLE_BYTE));
-    type2Code.put(Short.class, new Integer(TOKEN_SIMPLE_SHORT));
-    type2Code.put(Character.class, new Integer(TOKEN_SIMPLE_CHARACTER));
-    type2Code.put(Boolean.class, new Integer(TOKEN_SIMPLE_BOOLEAN));
+    type2Code.put(Integer.class, Integer.valueOf(TOKEN_SIMPLE_INTEGER));
+    type2Code.put(Long.class, Integer.valueOf(TOKEN_SIMPLE_LONG));
+    type2Code.put(Float.class, Integer.valueOf(TOKEN_SIMPLE_FLOAT));
+    type2Code.put(Double.class, Integer.valueOf(TOKEN_SIMPLE_DOUBLE));
+    type2Code.put(Byte.class, Integer.valueOf(TOKEN_SIMPLE_BYTE));
+    type2Code.put(Short.class, Integer.valueOf(TOKEN_SIMPLE_SHORT));
+    type2Code.put(Character.class, Integer.valueOf(TOKEN_SIMPLE_CHARACTER));
+    type2Code.put(Boolean.class, Integer.valueOf(TOKEN_SIMPLE_BOOLEAN));
 
     // primitives
-    type2Code.put(Integer.TYPE, new Integer(TOKEN_PRIMITIVE_INT));
-    type2Code.put(Long.TYPE, new Integer(TOKEN_PRIMITIVE_LONG));
-    type2Code.put(Float.TYPE, new Integer(TOKEN_PRIMITIVE_FLOAT));
-    type2Code.put(Double.TYPE, new Integer(TOKEN_PRIMITIVE_DOUBLE));
-    type2Code.put(Byte.TYPE, new Integer(TOKEN_PRIMITIVE_BYTE));
-    type2Code.put(Short.TYPE, new Integer(TOKEN_PRIMITIVE_SHORT));
-    type2Code.put(Character.TYPE, new Integer(TOKEN_PRIMITIVE_CHAR));
-    type2Code.put(Boolean.TYPE, new Integer(TOKEN_PRIMITIVE_BOOLEAN));
+    type2Code.put(Integer.TYPE, Integer.valueOf(TOKEN_PRIMITIVE_INT));
+    type2Code.put(Long.TYPE, Integer.valueOf(TOKEN_PRIMITIVE_LONG));
+    type2Code.put(Float.TYPE, Integer.valueOf(TOKEN_PRIMITIVE_FLOAT));
+    type2Code.put(Double.TYPE, Integer.valueOf(TOKEN_PRIMITIVE_DOUBLE));
+    type2Code.put(Byte.TYPE, Integer.valueOf(TOKEN_PRIMITIVE_BYTE));
+    type2Code.put(Short.TYPE, Integer.valueOf(TOKEN_PRIMITIVE_SHORT));
+    type2Code.put(Character.TYPE, Integer.valueOf(TOKEN_PRIMITIVE_CHAR));
+    type2Code.put(Boolean.TYPE, Integer.valueOf(TOKEN_PRIMITIVE_BOOLEAN));
 
     // reverse map to map type codes to classes, string class mapping
     // to be added manually, as the string type code is not written and
@@ -145,7 +145,7 @@ class ConfigurationHandler_ConfigAdmin184 {
       Map.Entry entry = (Map.Entry)ti.next();
       code2Type.put(entry.getValue(), entry.getKey());
     }
-    code2Type.put(new Integer(TOKEN_SIMPLE_STRING), String.class);
+    code2Type.put(Integer.valueOf(TOKEN_SIMPLE_STRING), String.class);
 
     NAME_CHARS = new BitSet();
     for (int i = '0'; i <= '9'; i++) {
@@ -301,7 +301,7 @@ class ConfigurationHandler_ConfigAdmin184 {
 
     // read value kind code if type code is not a value kinde code
     int code;
-    if (code2Type.containsKey(new Integer(type))) {
+    if (code2Type.containsKey(Integer.valueOf(type))) {
       code = read(pr);
     }
     else {
@@ -346,7 +346,7 @@ class ConfigurationHandler_ConfigAdmin184 {
       }
 
       if (c == TOKEN_ARR_CLOS) {
-        Class type = (Class)code2Type.get(new Integer(typeCode));
+        Class type = (Class)code2Type.get(Integer.valueOf(typeCode));
         Object array = Array.newInstance(type, list.size());
         for (int i = 0; i < list.size(); i++) {
           Array.set(array, i, list.get(i));
@@ -414,12 +414,12 @@ class ConfigurationHandler_ConfigAdmin184 {
       case TOKEN_SIMPLE_FLOAT:
       case TOKEN_PRIMITIVE_FLOAT:
         int fBits = Integer.parseInt(readQuoted(pr));
-        return new Float(Float.intBitsToFloat(fBits));
+        return Float.valueOf(Float.intBitsToFloat(fBits));
 
       case TOKEN_SIMPLE_DOUBLE:
       case TOKEN_PRIMITIVE_DOUBLE:
         long dBits = Long.parseLong(readQuoted(pr));
-        return new Double(Double.longBitsToDouble(dBits));
+        return Double.valueOf(Double.longBitsToDouble(dBits));
 
       case TOKEN_SIMPLE_BYTE:
       case TOKEN_PRIMITIVE_BYTE:
@@ -433,7 +433,7 @@ class ConfigurationHandler_ConfigAdmin184 {
       case TOKEN_PRIMITIVE_CHAR:
         String cString = readQuoted(pr);
         if (cString != null && cString.length() > 0) {
-          return new Character(cString.charAt(0));
+          return Character.valueOf(cString.charAt(0));
         }
         return null;
 
@@ -668,11 +668,11 @@ class ConfigurationHandler_ConfigAdmin184 {
   private static void writeSimple(Writer out, Object value) throws IOException {
     if (value instanceof Double) {
       double dVal = ((Double)value).doubleValue();
-      value = new Long(Double.doubleToRawLongBits(dVal));
+      value = Long.valueOf(Double.doubleToRawLongBits(dVal));
     }
     else if (value instanceof Float) {
       float fVal = ((Float)value).floatValue();
-      value = new Integer(Float.floatToRawIntBits(fVal));
+      value = Integer.valueOf(Float.floatToRawIntBits(fVal));
     }
 
     out.write(TOKEN_VAL_OPEN);
