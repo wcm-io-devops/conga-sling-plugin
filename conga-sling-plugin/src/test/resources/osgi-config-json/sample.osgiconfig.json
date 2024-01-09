@@ -1,0 +1,44 @@
+{
+  "configurations": {
+    "my.pid": {
+      "stringProperty": "value1",
+      "stringArrayProperty": ["v1","v2","v3"],
+      "booleanProperty": true,
+      "longProperty": 999999999999
+    },
+    "my.factory-my.pid": {
+      "stringProperty": "value2"
+    }
+  },
+
+  "configurations:mode1": {
+    "my.factory-my.pid2": {
+      "stringProperty": "value3"
+    }
+  },
+
+  "configurations:mode2": {
+    "my.pid2": {
+      "stringProperty": "value4"
+    }
+  },
+
+  "configurations:publish,prod": {
+    "my.pid2": {
+      "stringProperty": "value5"
+    }
+  },
+
+  "repoinit": [
+    "create path /repoinit/test1",
+    "create path /repoinit/test2"
+  ],
+
+  "repoinit:mode1": [
+    "create service user mode1"
+  ],
+
+  "repoinit:mode1,mode2": [
+    "create service user mode1_mode2"
+  ]
+}
