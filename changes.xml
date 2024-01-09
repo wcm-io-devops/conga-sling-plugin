@@ -24,9 +24,6 @@
   <body>
 
     <release version="1.4.0" date="not released">
-      <action type="add" dev="sseifert" issue="6">
-        Add OsgiCfgJsonFileHeader to provide file header support for .cfg.json files.
-      </action>
       <action type="update" dev="sseifert" issue="6">
         ProvisioningOsgiConfigPostProcessor: Write OSGi configurations as .cfg.json files instead of .config files.
       </action>
