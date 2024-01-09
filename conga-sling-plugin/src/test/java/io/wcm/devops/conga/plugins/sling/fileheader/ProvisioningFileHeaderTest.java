@@ -50,7 +50,7 @@ class ProvisioningFileHeaderTest {
   @Test
   void testApply() throws Exception {
     File file = new File("target/generation-test/fileHeader.txt");
-    FileUtils.copyFile(new File(getClass().getResource("/validProvisioning.txt").toURI()), file);
+    FileUtils.copyFile(new File(getClass().getResource("/provisioning/validProvisioning.txt").toURI()), file);
 
     List<String> lines = ImmutableList.of("Der Jodelkaiser", "aus dem Oetztal", "ist wieder daheim.");
     FileHeaderContext context = new FileHeaderContext().commentLines(lines);

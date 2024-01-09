@@ -66,7 +66,7 @@ class ProvisioningOsgiConfigPostProcessorTest {
 
     // post process example valid provisioning file
     File provisioningFile = new File(targetDir, "provisioningExample.txt");
-    FileUtils.copyFile(new File(getClass().getResource("/validProvisioning.txt").toURI()), provisioningFile);
+    FileUtils.copyFile(new File(getClass().getResource("/provisioning/validProvisioning.txt").toURI()), provisioningFile);
     postProcess(provisioningFile);
 
     // validate generated configs
@@ -138,7 +138,7 @@ class ProvisioningOsgiConfigPostProcessorTest {
 
     // post process example valid provisioning file
     File provisioningFile = new File(targetDir, "provisioningExample.txt");
-    FileUtils.copyFile(new File(getClass().getResource("/validProvisioningEscapedVariable.txt").toURI()), provisioningFile);
+    FileUtils.copyFile(new File(getClass().getResource("/provisioning/validProvisioningEscapedVariable.txt").toURI()), provisioningFile);
     postProcess(provisioningFile);
 
     // validate generated configs
