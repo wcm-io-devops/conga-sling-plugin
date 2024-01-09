@@ -1,3 +1,2 @@
-io.wcm.devops.conga.plugins.sling.fileheader.OsgiCfgJsonFileHeader
 io.wcm.devops.conga.plugins.sling.fileheader.OsgiConfigFileHeader
 io.wcm.devops.conga.plugins.sling.fileheader.ProvisioningFileHeader
