@@ -2,7 +2,7 @@
  * #%L
  * wcm.io
  * %%
- * Copyright (C) 2015 wcm.io
+ * Copyright (C) 2024 wcm.io
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ package io.wcm.devops.conga.plugins.sling.postprocessor;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
@@ -30,6 +29,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.felix.cm.json.io.Configurations;
@@ -44,7 +44,7 @@ import io.wcm.devops.conga.generator.spi.context.PluginContextOptions;
 import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 import io.wcm.devops.conga.generator.util.PluginManagerImpl;
 
-class ProvisioningOsgiConfigPostProcessorTest {
+class JsonOsgiConfigPostProcessorTest {
 
   private PostProcessorPlugin underTest;
 
@@ -52,29 +52,27 @@ class ProvisioningOsgiConfigPostProcessorTest {
 
   @BeforeEach
   void setUp(TestInfo testInfo) throws IOException {
-    underTest = new PluginManagerImpl().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
+    underTest = new PluginManagerImpl().get(JsonOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
 
     // prepare target dirctory
-    targetDir = new File("target/ProvisioningOsgiConfigPostProcessorTest_" + testInfo.getDisplayName());
+    targetDir = new File("target/JsonOsgiConfigPostProcessorTest_" + testInfo.getDisplayName());
     if (targetDir.exists()) {
       FileUtils.deleteDirectory(targetDir);
     }
   }
 
   @Test
-  void testProvisioningExample() throws Exception {
+  void testJsonFile() throws Exception {
 
     // post process example valid provisioning file
-    File provisioningFile = new File(targetDir, "provisioningExample.txt");
-    FileUtils.copyFile(new File(getClass().getResource("/provisioning/validProvisioning.txt").toURI()), provisioningFile);
+    File provisioningFile = new File(targetDir, "sample.osgiconfig.json");
+    FileUtils.copyFile(new File(getClass().getResource("/osgi-config-json/sample.osgiconfig.json").toURI()), provisioningFile);
     postProcess(provisioningFile);
 
     // validate generated configs
     Dictionary<?, ?> config = readConfig("my.pid.cfg.json");
     assertEquals("value1", config.get("stringProperty"));
-    assertArrayEquals(new String[] {
-        "v1", "v2", "v3"
-    }, (String[])config.get("stringArrayProperty"));
+    assertEquals(List.of("v1", "v2", "v3"), config.get("stringArrayProperty"));
     assertEquals(true, config.get("booleanProperty"));
     assertEquals(999999999999L, config.get("longProperty"));
 
@@ -84,66 +82,15 @@ class ProvisioningOsgiConfigPostProcessorTest {
     assertExists("publish.prod/my.pid2.cfg.json");
 
     // validate repoinit statements
-    config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-test.cfg.json");
-    assertArrayEquals(new String[] {"create path /repoinit/test1\n" +
-        "create path /repoinit/test2\n" }, (String[])config.get("scripts"));
+    config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-sample.cfg.json");
+    assertArrayEquals(new String[] { "create path /repoinit/test1\n" +
+        "create path /repoinit/test2" }, (String[])config.get("scripts"));
 
-    config = readConfig("mode1/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1.cfg.json");
-    assertArrayEquals(new String[] { "create service user mode1\n" }, (String[])config.get("scripts"));
+    config = readConfig("mode1/org.apache.sling.jcr.repoinit.RepositoryInitializer-sample-mode1.cfg.json");
+    assertArrayEquals(new String[] { "create service user mode1" }, (String[])config.get("scripts"));
 
-    config = readConfig("mode1.mode2/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1-mode2.cfg.json");
+    config = readConfig("mode1.mode2/org.apache.sling.jcr.repoinit.RepositoryInitializer-sample-mode1-mode2.cfg.json");
     assertArrayEquals(new String[] { "create service user mode1_mode2" }, (String[])config.get("scripts"));
-  }
-
-  @Test
-  void testSimpleConfig() throws Exception {
-    final String PROVISIONING_FILE = "[feature name=test]\n" +
-        "[configurations]\n" +
-        "com.example.ServiceConfiguration\n"
-        + "  bar=\"bar\""
-        + "  foo=\"foo\"";
-
-    // post process provisioning example
-    File provisioningFile = new File(targetDir, "simpleConfig.txt");
-    FileUtils.write(provisioningFile, PROVISIONING_FILE, StandardCharsets.UTF_8);
-    postProcess(provisioningFile);
-
-    // validate generated configs
-    Dictionary<?, ?> config = readConfig("com.example.ServiceConfiguration.cfg.json");
-    assertEquals("bar", config.get("bar"));
-    assertEquals("foo", config.get("foo"));
-  }
-
-  @Test
-  void testSimpleConfigWithNewline() throws Exception {
-    final String PROVISIONING_FILE = "[feature name=test]\n" +
-        "[configurations]\n" +
-        "com.example.ServiceConfiguration\n"
-        + ""
-        + "  foo=\"foo\"";
-
-    // post process provisioning example
-    File provisioningFile = new File(targetDir, "simpleConfigWithNewline.txt");
-    FileUtils.write(provisioningFile, PROVISIONING_FILE, StandardCharsets.UTF_8);
-    postProcess(provisioningFile);
-
-    // validate generated configs
-    Dictionary<?, ?> config = readConfig("com.example.ServiceConfiguration.cfg.json");
-    assertNull(config.get("bar"));
-    assertEquals("foo", config.get("foo"));
-  }
-
-  @Test
-  void testEscapedVariable() throws Exception {
-
-    // post process example valid provisioning file
-    File provisioningFile = new File(targetDir, "provisioningExample.txt");
-    FileUtils.copyFile(new File(getClass().getResource("/provisioning/validProvisioningEscapedVariable.txt").toURI()), provisioningFile);
-    postProcess(provisioningFile);
-
-    // validate generated configs
-    Dictionary<?, ?> config = readConfig("my.pid.cfg.json");
-    assertEquals("${var1} and ${var2}", config.get("stringProperty"));
   }
 
   private void postProcess(File provisioningFile) {
@@ -161,7 +108,7 @@ class ProvisioningOsgiConfigPostProcessorTest {
     underTest.apply(fileContext, context);
 
     // validate
-    assertFalse(provisioningFile.exists(), "Provisioning file deleted");
+    assertFalse(provisioningFile.exists(), "Combined JSON file deleted");
   }
 
   private Dictionary<?, ?> readConfig(String fileName) throws IOException {

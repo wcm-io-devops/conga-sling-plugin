@@ -20,13 +20,17 @@
 package io.wcm.devops.conga.plugins.sling.util;
 
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Dictionary;
 import java.util.List;
 import java.util.Objects;
 import java.util.SortedSet;
@@ -43,7 +47,9 @@ import org.apache.sling.provisioning.model.RunMode;
 import org.apache.sling.provisioning.model.Section;
 import org.apache.sling.provisioning.model.io.ModelReader;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
+import io.wcm.devops.conga.generator.spi.context.PostProcessorContext;
 import io.wcm.devops.conga.generator.util.FileUtil;
 
 /**
@@ -61,7 +67,8 @@ public final class ProvisioningUtil {
    */
   public static final String TEXT_FILE_EXTENSION = "txt";
 
-  private static final String REPOINIT_SECTION = "repoinit";
+  static final String REPOINIT_SECTION = "repoinit";
+  static final String REPOINIT_PROPERTY_RUNMODES = "runModes";
   private static final String REPOINIT_PID = "org.apache.sling.jcr.repoinit.RepositoryInitializer";
 
   private ProvisioningUtil() {
@@ -135,7 +142,7 @@ public final class ProvisioningUtil {
         }
 
         // associated run modes
-        String runModesString = section.getAttributes().get("runModes");
+        String runModesString = section.getAttributes().get(REPOINIT_PROPERTY_RUNMODES);
         RunMode runMode;
         if (runModesString != null) {
           runMode = new RunMode(StringUtils.split(runModesString, ","));
@@ -182,6 +189,33 @@ public final class ProvisioningUtil {
     path.append(configuration.getPid()).append(".cfg.json");
 
     return path.toString();
+  }
+
+  /**
+   * Generate OSGi configuration for all feature and run modes.
+   * @param model Provisioning Model
+   * @param dir Target directory
+   * @param context Post processor context
+   * @return Generated files
+   * @throws IOException I/O exception
+   */
+  public static List<FileContext> generateOsgiConfigurations(Model model, File dir, PostProcessorContext context) throws IOException {
+    return ProvisioningUtil.visitOsgiConfigurations(model, new ConfigConsumer<FileContext>() {
+
+      @Override
+      @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
+      public FileContext accept(String path, Dictionary<String, Object> properties) throws IOException {
+        context.getLogger().info("  Generate {}", path);
+
+        File confFile = new File(dir, path);
+        confFile.getParentFile().mkdirs();
+        try (FileOutputStream os = new FileOutputStream(confFile)) {
+          OsgiConfigUtil.write(os, properties);
+        }
+
+        return new FileContext().file(confFile).charset(StandardCharsets.UTF_8);
+      }
+    });
   }
 
 }
