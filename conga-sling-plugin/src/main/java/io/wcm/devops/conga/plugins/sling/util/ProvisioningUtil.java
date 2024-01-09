@@ -179,7 +179,7 @@ public final class ProvisioningUtil {
     if (configuration.getFactoryPid() != null) {
       path.append(configuration.getFactoryPid()).append("-");
     }
-    path.append(configuration.getPid()).append(".config");
+    path.append(configuration.getPid()).append(".cfg.json");
 
     return path.toString();
   }

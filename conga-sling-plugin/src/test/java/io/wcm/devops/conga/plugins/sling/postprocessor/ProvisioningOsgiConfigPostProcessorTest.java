@@ -25,16 +25,14 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.felix.cm.file.ConfigurationHandler;
+import org.apache.felix.cm.json.io.Configurations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -72,7 +70,7 @@ class ProvisioningOsgiConfigPostProcessorTest {
     postProcess(provisioningFile);
 
     // validate generated configs
-    Dictionary<?, ?> config = readConfig("my.pid.config");
+    Dictionary<?, ?> config = readConfig("my.pid.cfg.json");
     assertEquals("value1", config.get("stringProperty"));
     assertArrayEquals(new String[] {
         "v1", "v2", "v3"
@@ -80,20 +78,20 @@ class ProvisioningOsgiConfigPostProcessorTest {
     assertEquals(true, config.get("booleanProperty"));
     assertEquals(999999999999L, config.get("longProperty"));
 
-    assertExists("my.factory-my.pid.config");
-    assertExists("mode1/my.factory-my.pid2.config");
-    assertExists("mode2/my.pid2.config");
-    assertExists("publish.prod/my.pid2.config");
+    assertExists("my.factory-my.pid.cfg.json");
+    assertExists("mode1/my.factory-my.pid2.cfg.json");
+    assertExists("mode2/my.pid2.cfg.json");
+    assertExists("publish.prod/my.pid2.cfg.json");
 
     // validate repoinit statements
-    config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-test.config");
+    config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-test.cfg.json");
     assertArrayEquals(new String[] {"create path /repoinit/test1\n" +
         "create path /repoinit/test2\n" }, (String[])config.get("scripts"));
 
-    config = readConfig("mode1/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1.config");
+    config = readConfig("mode1/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1.cfg.json");
     assertArrayEquals(new String[] { "create service user mode1\n" }, (String[])config.get("scripts"));
 
-    config = readConfig("mode1.mode2/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1-mode2.config");
+    config = readConfig("mode1.mode2/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1-mode2.cfg.json");
     assertArrayEquals(new String[] { "create service user mode1_mode2" }, (String[])config.get("scripts"));
   }
 
@@ -111,7 +109,7 @@ class ProvisioningOsgiConfigPostProcessorTest {
     postProcess(provisioningFile);
 
     // validate generated configs
-    Dictionary<?, ?> config = readConfig("com.example.ServiceConfiguration.config");
+    Dictionary<?, ?> config = readConfig("com.example.ServiceConfiguration.cfg.json");
     assertEquals("bar", config.get("bar"));
     assertEquals("foo", config.get("foo"));
   }
@@ -130,7 +128,7 @@ class ProvisioningOsgiConfigPostProcessorTest {
     postProcess(provisioningFile);
 
     // validate generated configs
-    Dictionary<?, ?> config = readConfig("com.example.ServiceConfiguration.config");
+    Dictionary<?, ?> config = readConfig("com.example.ServiceConfiguration.cfg.json");
     assertNull(config.get("bar"));
     assertEquals("foo", config.get("foo"));
   }
@@ -144,7 +142,7 @@ class ProvisioningOsgiConfigPostProcessorTest {
     postProcess(provisioningFile);
 
     // validate generated configs
-    Dictionary<?, ?> config = readConfig("my.pid.config");
+    Dictionary<?, ?> config = readConfig("my.pid.cfg.json");
     assertEquals("${var1} and ${var2}", config.get("stringProperty"));
   }
 
@@ -169,8 +167,8 @@ class ProvisioningOsgiConfigPostProcessorTest {
   private Dictionary<?, ?> readConfig(String fileName) throws IOException {
     assertExists(fileName);
     File file = new File(targetDir, fileName);
-    try (InputStream is = new BufferedInputStream(new FileInputStream(file))) {
-      return ConfigurationHandler.read(is);
+    try (FileReader reader = new FileReader(file, StandardCharsets.UTF_8)) {
+      return Configurations.buildReader().build(reader).readConfiguration();
     }
   }
 
