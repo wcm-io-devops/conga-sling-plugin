@@ -54,7 +54,7 @@ class JsonOsgiConfigPostProcessorTest {
   void setUp(TestInfo testInfo) throws IOException {
     underTest = new PluginManagerImpl().get(JsonOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
 
-    // prepare target dirctory
+    // prepare target directory
     targetDir = new File("target/JsonOsgiConfigPostProcessorTest_" + testInfo.getDisplayName());
     if (targetDir.exists()) {
       FileUtils.deleteDirectory(targetDir);
@@ -64,7 +64,7 @@ class JsonOsgiConfigPostProcessorTest {
   @Test
   void testJsonFile() throws Exception {
 
-    // post process example valid provisioning file
+    // post process example JSON file
     File provisioningFile = new File(targetDir, "sample.osgiconfig.json");
     FileUtils.copyFile(new File(getClass().getResource("/osgi-config-json/sample.osgiconfig.json").toURI()), provisioningFile);
     postProcess(provisioningFile);

@@ -54,7 +54,7 @@ class ProvisioningOsgiConfigPostProcessorTest {
   void setUp(TestInfo testInfo) throws IOException {
     underTest = new PluginManagerImpl().get(ProvisioningOsgiConfigPostProcessor.NAME, PostProcessorPlugin.class);
 
-    // prepare target dirctory
+    // prepare target directory
     targetDir = new File("target/ProvisioningOsgiConfigPostProcessorTest_" + testInfo.getDisplayName());
     if (targetDir.exists()) {
       FileUtils.deleteDirectory(targetDir);

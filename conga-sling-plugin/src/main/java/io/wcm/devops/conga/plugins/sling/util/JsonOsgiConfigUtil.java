@@ -35,6 +35,7 @@ import org.apache.sling.provisioning.model.Feature;
 import org.apache.sling.provisioning.model.Model;
 import org.apache.sling.provisioning.model.RunMode;
 import org.apache.sling.provisioning.model.Section;
+import org.jetbrains.annotations.Nullable;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,7 +43,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.wcm.devops.conga.plugins.sling.postprocessor.JsonOsgiConfigPostProcessor;
 
 /**
- * Helper class for reading JSON files.
+ * Transforms a combined JSON file to provisioning model with OSGi configurations and repoinit statements.
  */
 public final class JsonOsgiConfigUtil {
 
@@ -89,6 +90,9 @@ public final class JsonOsgiConfigUtil {
     return model;
   }
 
+  /**
+   * Detect entries describing OSGi configurations and repoinit statements.
+   */
   @SuppressWarnings("unchecked")
   private static void processEntry(Feature feature, String key, Object value) throws IOException {
     Matcher configurationsKeyMatcher = KEY_PATTERN_CONFIGURATIONS.matcher(key);
@@ -118,14 +122,16 @@ public final class JsonOsgiConfigUtil {
     }
   }
 
-  private static String[] toRunModes(String runModesString) {
+  private static String @Nullable [] toRunModes(String runModesString) {
     if (StringUtils.isBlank(runModesString)) {
       return null;
     }
     return StringUtils.split(runModesString, ",");
   }
 
-
+  /**
+   * Convert OSGi configurations to Provisioning model configurations with associated run modes.
+   */
   @SuppressWarnings("unchecked")
   private static void processOsgiConfiguration(Feature feature, String[] runModes, Map<String, Object> configurations) throws IOException {
     RunMode runMode = feature.getOrCreateRunMode(runModes);
@@ -146,6 +152,9 @@ public final class JsonOsgiConfigUtil {
     }
   }
 
+  /**
+   * Convert repoinit statements to Provisioning model additional sections with associated run modes.
+   */
   private static void processRepoInit(Feature feature, String[] runModes, Collection<String> repoinits) {
     Section section = new Section(ProvisioningUtil.REPOINIT_SECTION);
     feature.getAdditionalSections().add(section);
