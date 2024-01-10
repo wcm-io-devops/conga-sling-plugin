@@ -42,6 +42,7 @@ class JsonOsgiConfigUtilTest {
     assertArrayEquals(new Integer[] { 1, 2, 3 }, (Integer[])content.get("intArray"));
     assertArrayEquals(new Boolean[] { true, false }, (Boolean[])content.get("boolArray"));
     assertArrayEquals(new Object[] { "v1", 1, true }, (Object[])content.get("mixedArray"));
+    assertArrayEquals(new Object[0], (Object[])content.get("emptyArray"));
     assertArrayEquals(new String[] { "v1" }, (String[])((Map)content.get("nested")).get("stringArray"));
   }
 

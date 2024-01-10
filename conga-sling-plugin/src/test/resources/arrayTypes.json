@@ -3,6 +3,7 @@
   "intArray": [1,2,3],
   "boolArray": [true,false],
   "mixedArray": ["v1",1,true],
+  "emptyArray": [],
   "nested": {
     "stringArray": ["v1"]
   }

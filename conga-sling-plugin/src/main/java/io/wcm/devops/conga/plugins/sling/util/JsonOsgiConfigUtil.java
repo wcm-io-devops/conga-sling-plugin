@@ -101,12 +101,17 @@ public final class JsonOsgiConfigUtil {
   private static Class<?> detectArrayType(Collection<?> list) {
     Class<?> type = null;
     for (Object item : list) {
-      if (type == null) {
-        type = item.getClass();
+      if (item != null) {
+        if (type == null) {
+          type = item.getClass();
+        }
+        else if (type != item.getClass()) {
+          type = Object.class;
+        }
       }
-      else if (type != item.getClass()) {
-        type = Object.class;
-      }
+    }
+    if (type == null) {
+      type = Object.class;
     }
     return type;
   }
