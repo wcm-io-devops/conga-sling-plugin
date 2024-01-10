@@ -13,9 +13,9 @@ files:
   postProcessors:
   - sling-provisioning-osgiconfig
 
-- file: sample.osgiconfig.json
+- file: config-sample.osgiconfig.json
   dir: osgi-config-from-json
-  template: sample.osgiconfig.json.hbs
+  template: config-sample.osgiconfig.json.hbs
   postProcessors:
   - sling-json-osgiconfig
 
