@@ -9,6 +9,7 @@ wcm.io DevOps CONGA Plugin for [Apache Sling][sling].
 
 * [Usage][usage]
 * [CONGA Extensions][extensions]
+* [Combined JSON file for defining OSGi Configurations][osgi-config-combined-json]
 * [API documentation][apidocs]
 * [Changelog][changelog]
 
@@ -17,8 +18,8 @@ wcm.io DevOps CONGA Plugin for [Apache Sling][sling].
 
 This plugin extends [CONGA][conga] with:
 
-* Manage OSGi configuration templates in [Apache Sling Provisioning][sling-provisioning] file format
-* Generate OSGi configurations in [Apache Felix Config Admin][felix-configadmin] file format
+* Manage OSGi configuration templates in [Combined JSON files][osgi-config-combined-json] or [Apache Sling Provisioning][sling-provisioning] file format
+* Generate OSGi configurations in `.cfg.json` files (as used by [Apache Sling Configuration Installer Factory][sling-configuration-installer-factory-cfg-json])
 
 
 ### Further Resources
@@ -31,9 +32,10 @@ This plugin extends [CONGA][conga] with:
 
 [usage]: usage.html
 [extensions]: extensions.html
+[osgi-config-combined-json]: osgi-config-combined-json.html
 [apidocs]: conga-sling-plugin/apidocs/
 [changelog]: changes-report.html
 [conga]: https://devops.wcm.io/conga/
 [sling]: http://sling.apache.org/
 [sling-provisioning]: https://sling.apache.org/documentation/development/slingstart.html
-[felix-configadmin]: http://felix.apache.org/documentation/subprojects/apache-felix-config-admin.html
+[sling-configuration-installer-factory-cfg-json]: https://sling.apache.org/documentation/bundles/configuration-installer-factory.html#configuration-files-cfgjson
