@@ -39,7 +39,9 @@ import org.apache.sling.provisioning.model.RunMode;
 import org.apache.sling.provisioning.model.Section;
 import org.jetbrains.annotations.Nullable;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.type.MapType;
 
 import io.wcm.devops.conga.plugins.sling.postprocessor.JsonOsgiConfigPostProcessor;
@@ -49,8 +51,10 @@ import io.wcm.devops.conga.plugins.sling.postprocessor.JsonOsgiConfigPostProcess
  */
 public final class JsonOsgiConfigUtil {
 
-  private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
-      .enable(com.fasterxml.jackson.core.JsonParser.Feature.ALLOW_COMMENTS);
+  private static final JsonMapper OBJECT_MAPPER = JsonMapper.builder()
+      .enable(JsonParser.Feature.ALLOW_COMMENTS)
+      .enable(JsonReadFeature.ALLOW_TRAILING_COMMA)
+      .build();
   private static final MapType MAP_TYPE = OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
 
   private static final Pattern KEY_PATTERN_CONFIGURATIONS = Pattern.compile("^configurations(:(.*))?$");

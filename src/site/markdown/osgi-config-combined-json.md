@@ -47,7 +47,7 @@ The following keys are allowed on toplevel of the JSON file:
 
 `runmode` can be a comma-separate strings, e.g. `prod,publish`. In this case all given run modes have to be active. On AEM as a Cloud Service, only the [officially supported run modes][aemaacs-runmodes] are allowed.
 
-You can use comments in the JSON file, they are stripped out when generating the `.cfg.json` files.
+You can use comments in the JSON file, they are stripped out when generating the `.cfg.json` files. It's also valid to use trailing commas in JSON arrays and JSON objects, this eases generating JSON via templates.
 
 Real world example with HBS template: [wcm-io-samples-aem-cms-config.osgiconfig.json.hbs](https://github.com/wcm-io/io.wcm.samples/blob/develop/config-definition/src/main/templates/wcm-io-samples-aem-cms/wcm-io-samples-aem-cms-config.osgiconfig.json.hbs)
 
