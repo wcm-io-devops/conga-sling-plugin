@@ -29,7 +29,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
-import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.felix.cm.json.io.Configurations;
@@ -72,7 +71,9 @@ class JsonOsgiConfigPostProcessorTest {
     // validate generated configs
     Dictionary<?, ?> config = readConfig("my.pid.cfg.json");
     assertEquals("value1", config.get("stringProperty"));
-    assertEquals(List.of("v1", "v2", "v3"), config.get("stringArrayProperty"));
+    assertArrayEquals(new String[] {
+        "v1", "v2", "v3"
+    }, (String[])config.get("stringArrayProperty"));
     assertEquals(true, config.get("booleanProperty"));
     assertEquals(999999999999L, config.get("longProperty"));
 

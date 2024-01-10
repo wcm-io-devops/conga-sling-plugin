@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Dictionary;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,8 +38,8 @@ import org.apache.sling.provisioning.model.RunMode;
 import org.apache.sling.provisioning.model.Section;
 import org.jetbrains.annotations.Nullable;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.MapType;
 
 import io.wcm.devops.conga.plugins.sling.postprocessor.JsonOsgiConfigPostProcessor;
 
@@ -48,9 +49,7 @@ import io.wcm.devops.conga.plugins.sling.postprocessor.JsonOsgiConfigPostProcess
 public final class JsonOsgiConfigUtil {
 
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-  private static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {
-    // default implementation
-  };
+  private static final MapType MAP_TYPE = OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
 
   private static final Pattern KEY_PATTERN_CONFIGURATIONS = Pattern.compile("^configurations(:(.*))?$");
   private static final Pattern KEY_PATTERN_REPOINIT = Pattern.compile("^repoinit(:(.*))?$");
@@ -68,7 +67,29 @@ public final class JsonOsgiConfigUtil {
    */
   static Map<String, Object> readToMap(File file) throws IOException {
     String jsonString = FileUtils.readFileToString(file, StandardCharsets.UTF_8);
-    return OBJECT_MAPPER.readValue(jsonString, MAP_TYPE_REFERENCE);
+    Map<String, Object> result = OBJECT_MAPPER.readValue(jsonString, MAP_TYPE);
+    return convertListsToArrays(result);
+  }
+
+  /**
+   * Jackson converts arrays in JSON to lists. We want to keep them represented as arrays for conversion
+   * to OSGi configuration, so we convert them recursively back to Object[] arrays.
+   */
+  @SuppressWarnings("unchecked")
+  private static Map<String, Object> convertListsToArrays(Map<String, Object> map) {
+    Map<String, Object> result = new LinkedHashMap<>();
+    for (Map.Entry<String, Object> entry : map.entrySet()) {
+      String key = entry.getKey();
+      Object value = entry.getValue();
+      if (value instanceof Collection) {
+        value = ((Collection)value).toArray();
+      }
+      else if (value instanceof Map) {
+        value = convertListsToArrays((Map<String, Object>)value);
+      }
+      result.put(key, value);
+    }
+    return result;
   }
 
   /**
@@ -108,9 +129,9 @@ public final class JsonOsgiConfigUtil {
     else {
       Matcher repoinitKeyMatcher = KEY_PATTERN_REPOINIT.matcher(key);
       if (repoinitKeyMatcher.matches()) {
-        if (value instanceof Collection) {
+        if (value.getClass().isArray()) {
           String[] runModes = toRunModes(repoinitKeyMatcher.group(RUNMODES_INDEX));
-          processRepoInit(feature, runModes, (Collection<String>)value);
+          processRepoInit(feature, runModes, (Object[])value);
         }
         else {
           throw new IOException("Unexpected data for key " + key + ": " + value.getClass().getName());
@@ -155,7 +176,7 @@ public final class JsonOsgiConfigUtil {
   /**
    * Convert repoinit statements to Provisioning model additional sections with associated run modes.
    */
-  private static void processRepoInit(Feature feature, String[] runModes, Collection<String> repoinits) {
+  private static void processRepoInit(Feature feature, String[] runModes, Object[] repoinits) {
     Section section = new Section(ProvisioningUtil.REPOINIT_SECTION);
     feature.getAdditionalSections().add(section);
     if (runModes != null) {

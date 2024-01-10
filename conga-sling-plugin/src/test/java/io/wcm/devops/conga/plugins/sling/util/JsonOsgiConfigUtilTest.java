@@ -19,11 +19,11 @@
  */
 package io.wcm.devops.conga.plugins.sling.util;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -31,9 +31,17 @@ import org.junit.jupiter.api.Test;
 class JsonOsgiConfigUtilTest {
 
   @Test
+  @SuppressWarnings("unchecked")
   void testReadToMap() throws IOException {
     Map<String, Object> content = JsonOsgiConfigUtil.readToMap(new File("src/test/resources/osgi-config-json/sample.osgiconfig.json"));
-    assertEquals(List.of("create service user mode1"), content.get("repoinit:mode1"));
+    assertArrayEquals(new Object[] { "create service user mode1" }, (Object[])content.get("repoinit:mode1"));
+
+    // assert JSON arrays are represented as array in map instead of list
+    Map<String, Object> configurations = (Map<String, Object>)content.get("configurations");
+    Map<String, Object> my_pid = (Map<String, Object>)configurations.get("my.pid");
+    Object stringArrayProperty = my_pid.get("stringArrayProperty");
+    assertTrue(stringArrayProperty.getClass().isArray());
+    assertArrayEquals(new Object[] { "v1", "v2", "v3" }, (Object[])stringArrayProperty);
   }
 
 }
