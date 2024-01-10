@@ -24,6 +24,9 @@
   <body>
 
     <release version="1.4.0" date="not released">
+      <action type="add" dev="sseifert" issue="7">
+        Add JsonOsgiConfigPostProcessor to support reading a combined set of OSGi configuration for run modes from .osgiconfig.json files.
+      </action>
       <action type="update" dev="sseifert" issue="6">
         ProvisioningOsgiConfigPostProcessor: Write OSGi configurations as .cfg.json files instead of .config files.
       </action>
