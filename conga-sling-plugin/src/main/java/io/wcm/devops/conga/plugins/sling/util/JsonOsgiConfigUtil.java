@@ -21,6 +21,7 @@ package io.wcm.devops.conga.plugins.sling.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Dictionary;
@@ -74,7 +75,7 @@ public final class JsonOsgiConfigUtil {
 
   /**
    * Jackson converts arrays in JSON to lists. We want to keep them represented as arrays for conversion
-   * to OSGi configuration, so we convert them recursively back to Object[] arrays.
+   * to OSGi configuration, so we convert them recursively back to arrays.
    */
   @SuppressWarnings("unchecked")
   private static Map<String, Object> convertListsToArrays(Map<String, Object> map) {
@@ -83,7 +84,8 @@ public final class JsonOsgiConfigUtil {
       String key = entry.getKey();
       Object value = entry.getValue();
       if (value instanceof Collection) {
-        value = ((Collection)value).toArray();
+        Collection<?> collection = ((Collection)value);
+        value = collection.toArray((Object[])Array.newInstance(detectArrayType(collection), collection.size()));
       }
       else if (value instanceof Map) {
         value = convertListsToArrays((Map<String, Object>)value);
@@ -91,6 +93,22 @@ public final class JsonOsgiConfigUtil {
       result.put(key, value);
     }
     return result;
+  }
+
+  /**
+   * Detect type from list of items. If all items have the same type this is returned, otherwise Object.class.
+   */
+  private static Class<?> detectArrayType(Collection<?> list) {
+    Class<?> type = null;
+    for (Object item : list) {
+      if (type == null) {
+        type = item.getClass();
+      }
+      else if (type != item.getClass()) {
+        type = Object.class;
+      }
+    }
+    return type;
   }
 
   /**

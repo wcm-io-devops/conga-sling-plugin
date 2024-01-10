@@ -1,0 +1,9 @@
+{
+  "stringArray": ["v1","v2","v3"],
+  "intArray": [1,2,3],
+  "boolArray": [true,false],
+  "mixedArray": ["v1",1,true],
+  "nested": {
+    "stringArray": ["v1"]
+  }
+}
