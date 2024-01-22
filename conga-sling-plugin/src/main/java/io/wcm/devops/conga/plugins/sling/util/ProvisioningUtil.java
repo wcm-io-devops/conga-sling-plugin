@@ -117,6 +117,7 @@ public final class ProvisioningUtil {
    * @return List of non-null results
    * @throws IOException I/O exception
    */
+  @SuppressWarnings("java:S3776") // ignore complexity
   public static <R> List<R> visitOsgiConfigurations(Model model, ConfigConsumer<R> consumer) throws IOException {
     List<R> results = new ArrayList<>();
     for (Feature feature : model.getFeatures()) {
