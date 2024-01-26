@@ -23,13 +23,13 @@
   <parent>
     <groupId>io.wcm.devops.conga.plugins</groupId>
     <artifactId>io.wcm.devops.conga.plugins.sling.parent</artifactId>
-    <version>1.4.0-SNAPSHOT</version>
+    <version>1.4.0</version>
     <relativePath>parent/pom.xml</relativePath>
   </parent>
 
   <groupId>io.wcm.devops.conga.plugins</groupId>
   <artifactId>io.wcm.devops.conga.plugins.sling.root</artifactId>
-  <version>1.4.0-SNAPSHOT</version>
+  <version>1.4.0</version>
   <packaging>pom</packaging>
 
   <name>CONGA Sling Plugin</name>
