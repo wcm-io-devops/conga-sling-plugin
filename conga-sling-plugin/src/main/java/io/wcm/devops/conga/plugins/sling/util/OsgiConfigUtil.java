@@ -21,11 +21,15 @@ package io.wcm.devops.conga.plugins.sling.util;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.util.Dictionary;
 
+import org.apache.felix.cm.json.io.Configurations;
+
 /**
- * Helper class for writing OSGi configurations in Felix ConfigAdmin format.
- * This writes the "old" ConfigAdmin format of Felix ConfigAdmin 1.8.4 to be compatible with AEM 6.1 and below.
+ * Helper class for writing OSGi configurations in JSON format (.cfg.json files).
  */
 public final class OsgiConfigUtil {
 
@@ -42,8 +46,10 @@ public final class OsgiConfigUtil {
    * @param properties The <code>Dictionary</code> to write.
    * @throws IOException If an error occurs writing to the output stream.
    */
-  public static void write(OutputStream out, Dictionary properties) throws IOException {
-    ConfigurationHandler_ConfigAdmin184.write(out, properties);
+  public static void write(OutputStream out, Dictionary<String, Object> properties) throws IOException {
+    try (Writer writer = new OutputStreamWriter(out, StandardCharsets.UTF_8)) {
+      Configurations.buildWriter().build(writer).writeConfiguration(properties);
+    }
   }
 
 }

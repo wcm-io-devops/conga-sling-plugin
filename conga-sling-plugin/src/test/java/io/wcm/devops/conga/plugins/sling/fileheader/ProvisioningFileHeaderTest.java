@@ -31,8 +31,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.google.common.collect.ImmutableList;
-
 import io.wcm.devops.conga.generator.spi.FileHeaderPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
 import io.wcm.devops.conga.generator.spi.context.FileHeaderContext;
@@ -50,9 +48,9 @@ class ProvisioningFileHeaderTest {
   @Test
   void testApply() throws Exception {
     File file = new File("target/generation-test/fileHeader.txt");
-    FileUtils.copyFile(new File(getClass().getResource("/validProvisioning.txt").toURI()), file);
+    FileUtils.copyFile(new File(getClass().getResource("/provisioning/validProvisioning.txt").toURI()), file);
 
-    List<String> lines = ImmutableList.of("Der Jodelkaiser", "aus dem Oetztal", "ist wieder daheim.");
+    List<String> lines = List.of("Der Jodelkaiser", "aus dem Oetztal", "ist wieder daheim.");
     FileHeaderContext context = new FileHeaderContext().commentLines(lines);
     FileContext fileContext = new FileContext().file(file);
 

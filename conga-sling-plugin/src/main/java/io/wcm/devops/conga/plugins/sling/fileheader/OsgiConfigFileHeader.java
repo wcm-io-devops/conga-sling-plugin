@@ -20,12 +20,11 @@
 package io.wcm.devops.conga.plugins.sling.fileheader;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
-
-import com.google.common.collect.ImmutableList;
 
 import io.wcm.devops.conga.generator.GeneratorException;
 import io.wcm.devops.conga.generator.plugins.fileheader.AbstractFileHeader;
@@ -95,7 +94,7 @@ public final class OsgiConfigFileHeader extends AbstractFileHeader {
       String[] contentLines = StringUtils.split(content, "\n");
       if (contentLines.length > 0 && StringUtils.startsWith(contentLines[0], getCommentLinePrefix())) {
         String fullComment = StringUtils.trim(StringUtils.substringAfter(contentLines[0], getCommentBlockStart()));
-        List<String> lines = ImmutableList.of(fullComment);
+        List<String> lines = Arrays.asList(fullComment);
         return new FileHeaderContext().commentLines(lines);
       }
     }

@@ -45,7 +45,7 @@ class ProvisioningValidatorTest {
 
   @Test
   void testValid() throws Exception {
-    File file = new File(getClass().getResource("/validProvisioning.txt").toURI());
+    File file = new File(getClass().getResource("/provisioning/validProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
     underTest.apply(fileContext, null);
@@ -53,7 +53,7 @@ class ProvisioningValidatorTest {
 
   @Test
   void testInvalid() throws Exception {
-    File file = new File(getClass().getResource("/invalidProvisioning.txt").toURI());
+    File file = new File(getClass().getResource("/provisioning/invalidProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
     assertThrows(ValidationException.class, () -> {
@@ -63,14 +63,14 @@ class ProvisioningValidatorTest {
 
   @Test
   void testInvalidFileExtension() throws Exception {
-    File file = new File(getClass().getResource("/noProvisioning.txt").toURI());
+    File file = new File(getClass().getResource("/provisioning/noProvisioning.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertFalse(underTest.accepts(fileContext, null));
   }
 
   @Test
   void testEscapedVariable() throws Exception {
-    File file = new File(getClass().getResource("/validProvisioningEscapedVariable.txt").toURI());
+    File file = new File(getClass().getResource("/provisioning/validProvisioningEscapedVariable.txt").toURI());
     FileContext fileContext = new FileContext().file(file).charset(StandardCharsets.UTF_8);
     assertTrue(underTest.accepts(fileContext, null));
     underTest.apply(fileContext, null);

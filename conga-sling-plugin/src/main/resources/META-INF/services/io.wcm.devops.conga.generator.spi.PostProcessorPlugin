@@ -1,1 +1,2 @@
+io.wcm.devops.conga.plugins.sling.postprocessor.JsonOsgiConfigPostProcessor
 io.wcm.devops.conga.plugins.sling.postprocessor.ProvisioningOsgiConfigPostProcessor

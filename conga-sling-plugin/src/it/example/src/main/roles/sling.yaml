@@ -13,6 +13,11 @@ files:
   postProcessors:
   - sling-provisioning-osgiconfig
 
+- file: config-sample.osgiconfig.json
+  dir: osgi-config-from-json
+  template: config-sample.osgiconfig.json.hbs
+  postProcessors:
+  - sling-json-osgiconfig
 
 # Defines configuration parameters and default values
 config:
