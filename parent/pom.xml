@@ -46,6 +46,18 @@
     <url>https://github.com/wcm-io-devops/conga-sling-plugin/issues/</url>
   </issueManagement>
 
+  <dependencyManagement>
+    <dependencies>
+    
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>1.7.36</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
   <build>
     <plugins>
 
@@ -62,17 +74,5 @@
 
     </plugins>
   </build>
-
-  <dependencyManagement>
-    <dependencies>
-    
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <version>1.7.36</version>
-      </dependency>
-
-    </dependencies>
-  </dependencyManagement>
 
 </project>
