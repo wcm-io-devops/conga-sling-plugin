@@ -34,7 +34,7 @@ This plugin extends [CONGA][conga] with:
 [extensions]: extensions.html
 [osgi-config-combined-json]: osgi-config-combined-json.html
 [apidocs]: conga-sling-plugin/apidocs/
-[changelog]: changes-report.html
+[changelog]: changes.html
 [conga]: https://devops.wcm.io/conga/
 [sling]: http://sling.apache.org/
 [sling-provisioning]: https://sling.apache.org/documentation/development/slingstart.html

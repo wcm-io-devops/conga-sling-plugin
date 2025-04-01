@@ -15,19 +15,16 @@ From this combined JSON file, CONGA generates individually `.cfg.json` files as 
       "prop3": true
     }
   },
-
   "configurations:dev": {
     "my.pid2": {
       "prop1": "value-for-dev"
     }
   },
-
   "configurations:publish,prod": {
     "my.pid2": {
       "prop1": "value-for-publish-prod"
     }
-  }
-
+  },
   "repoinit": [
     "create path /repoinit/test1",
     "create path /repoinit/test2"
