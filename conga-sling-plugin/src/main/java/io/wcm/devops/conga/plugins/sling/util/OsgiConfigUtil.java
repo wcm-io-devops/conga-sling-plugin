@@ -39,6 +39,7 @@ public final class OsgiConfigUtil {
 
   /**
    * Writes the configuration data from the <code>Dictionary</code> to the given <code>OutputStream</code>.
+   *
    * <p>
    * This method writes at the current location in the stream and does not close the outputstream.
    * </p>

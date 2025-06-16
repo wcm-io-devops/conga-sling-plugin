@@ -201,7 +201,7 @@ public final class ProvisioningUtil {
    * @throws IOException I/O exception
    */
   public static List<FileContext> generateOsgiConfigurations(Model model, File dir, PostProcessorContext context) throws IOException {
-    return ProvisioningUtil.visitOsgiConfigurations(model, new ConfigConsumer<FileContext>() {
+    return visitOsgiConfigurations(model, new ConfigConsumer<FileContext>() {
 
       @Override
       @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")

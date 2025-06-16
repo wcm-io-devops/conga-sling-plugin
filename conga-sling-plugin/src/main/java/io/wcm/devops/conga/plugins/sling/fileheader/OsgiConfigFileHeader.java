@@ -34,6 +34,7 @@ import io.wcm.devops.conga.generator.util.FileUtil;
 
 /**
  * Adds file headers to OSGi .config files.
+ *
  * <p>
  * Please note: This plugin converts the file header to a single comment line,
  * because Felix Configuation Admin Service versions &lt; 1.8.8 do not support multi-line comments.
