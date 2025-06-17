@@ -27,7 +27,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.sling.provisioning.model.Model;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import io.wcm.devops.conga.generator.GeneratorException;
 import io.wcm.devops.conga.generator.spi.PostProcessorPlugin;
 import io.wcm.devops.conga.generator.spi.context.FileContext;
@@ -61,7 +60,6 @@ public class JsonOsgiConfigPostProcessor implements PostProcessorPlugin {
   }
 
   @Override
-  @SuppressFBWarnings("RV_RETURN_VALUE_IGNORED_BAD_PRACTICE")
   public List<FileContext> apply(FileContext fileContext, PostProcessorContext context) {
     File file = fileContext.getFile();
     try {
