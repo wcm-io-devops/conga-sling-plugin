@@ -38,6 +38,7 @@ import java.util.TreeSet;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.sling.provisioning.model.Configuration;
 import org.apache.sling.provisioning.model.Feature;
 import org.apache.sling.provisioning.model.Model;
@@ -87,7 +88,7 @@ public final class ProvisioningUtil {
     try {
       // check for generic txt extension and do some heuristics on the content of the file
       return FileUtil.matchesExtension(file.getFile(), TEXT_FILE_EXTENSION)
-          && StringUtils.contains(FileUtils.readFileToString(file.getFile(), file.getCharset()), "[feature ");
+          && Strings.CS.contains(FileUtils.readFileToString(file.getFile(), file.getCharset()), "[feature ");
     }
     catch (IOException ex) {
       return false;
@@ -154,7 +155,7 @@ public final class ProvisioningUtil {
 
         // prepare repoinit OSGi configuration
         String pid = Objects.toString(feature.getName(), "conga")
-            + (runModesString != null ? "-" + StringUtils.replace(runModesString, ",", "-") : "");
+            + (runModesString != null ? "-" + Strings.CS.replace(runModesString, ",", "-") : "");
         Configuration configuration = new Configuration(pid, REPOINIT_PID);
         configuration.getProperties().put("scripts", new String[] { script });
         String path = getPathForConfiguration(configuration, runMode);

@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.sling.provisioning.model.Model;
 
 import io.wcm.devops.conga.generator.GeneratorException;
@@ -56,7 +56,7 @@ public class JsonOsgiConfigPostProcessor implements PostProcessorPlugin {
 
   @Override
   public boolean accepts(FileContext file, PostProcessorContext context) {
-    return StringUtils.endsWith(file.getFile().getName(), FILE_EXTENSION);
+    return Strings.CS.endsWith(file.getFile().getName(), FILE_EXTENSION);
   }
 
   @Override
