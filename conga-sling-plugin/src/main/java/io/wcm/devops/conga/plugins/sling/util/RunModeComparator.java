@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -43,7 +43,7 @@ public class RunModeComparator implements Comparator<String>, Serializable {
     if (!isServiceRunmode(runmode1) && isServiceRunmode(runmode2)) {
       return 1;
     }
-    return StringUtils.compare(runmode1, runmode2);
+    return Strings.CS.compare(runmode1, runmode2);
   }
 
   private static boolean isServiceRunmode(@Nullable String runmode) {

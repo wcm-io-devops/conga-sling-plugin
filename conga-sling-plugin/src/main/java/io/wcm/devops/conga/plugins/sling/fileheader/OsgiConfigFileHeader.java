@@ -25,6 +25,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import io.wcm.devops.conga.generator.GeneratorException;
 import io.wcm.devops.conga.generator.plugins.fileheader.AbstractFileHeader;
@@ -34,6 +35,7 @@ import io.wcm.devops.conga.generator.util.FileUtil;
 
 /**
  * Adds file headers to OSGi .config files.
+ *
  * <p>
  * Please note: This plugin converts the file header to a single comment line,
  * because Felix Configuation Admin Service versions &lt; 1.8.8 do not support multi-line comments.
@@ -60,7 +62,7 @@ public final class OsgiConfigFileHeader extends AbstractFileHeader {
 
   @Override
   protected String sanitizeComment(String line) {
-    if (StringUtils.equals(line, "") || StringUtils.contains(line, "*****")) {
+    if (Strings.CS.equals(line, "") || Strings.CS.contains(line, "*****")) {
       return null;
     }
     return StringUtils.trim(line);
@@ -92,7 +94,7 @@ public final class OsgiConfigFileHeader extends AbstractFileHeader {
     try {
       String content = FileUtils.readFileToString(file.getFile(), file.getCharset());
       String[] contentLines = StringUtils.split(content, "\n");
-      if (contentLines.length > 0 && StringUtils.startsWith(contentLines[0], getCommentLinePrefix())) {
+      if (contentLines.length > 0 && Strings.CS.startsWith(contentLines[0], getCommentLinePrefix())) {
         String fullComment = StringUtils.trim(StringUtils.substringAfter(contentLines[0], getCommentBlockStart()));
         List<String> lines = Arrays.asList(fullComment);
         return new FileHeaderContext().commentLines(lines);
