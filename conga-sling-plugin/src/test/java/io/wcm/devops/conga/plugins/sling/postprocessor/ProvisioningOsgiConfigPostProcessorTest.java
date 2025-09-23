@@ -85,8 +85,10 @@ class ProvisioningOsgiConfigPostProcessorTest {
 
     // validate repoinit statements
     config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-test.cfg.json");
-    assertArrayEquals(new String[] {"create path /repoinit/test1\n" +
-        "create path /repoinit/test2\n" }, (String[])config.get("scripts"));
+    assertArrayEquals(new String[] { """
+        create path /repoinit/test1
+        create path /repoinit/test2
+        """ }, (String[])config.get("scripts"));
 
     config = readConfig("mode1/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1.cfg.json");
     assertArrayEquals(new String[] { "create service user mode1\n" }, (String[])config.get("scripts"));
@@ -97,11 +99,13 @@ class ProvisioningOsgiConfigPostProcessorTest {
 
   @Test
   void testSimpleConfig() throws Exception {
-    final String PROVISIONING_FILE = "[feature name=test]\n" +
-        "[configurations]\n" +
-        "com.example.ServiceConfiguration\n"
-        + "  bar=\"bar\""
-        + "  foo=\"foo\"";
+    final String PROVISIONING_FILE = """
+        [feature name=test]
+        [configurations]
+        com.example.ServiceConfiguration
+          bar="bar"
+          foo="foo"
+        """;
 
     // post process provisioning example
     File provisioningFile = new File(targetDir, "simpleConfig.txt");
@@ -116,11 +120,12 @@ class ProvisioningOsgiConfigPostProcessorTest {
 
   @Test
   void testSimpleConfigWithNewline() throws Exception {
-    final String PROVISIONING_FILE = "[feature name=test]\n" +
-        "[configurations]\n" +
-        "com.example.ServiceConfiguration\n"
-        + ""
-        + "  foo=\"foo\"";
+    final String PROVISIONING_FILE = """
+        [feature name=test]
+        [configurations]
+        com.example.ServiceConfiguration
+          foo="foo"
+        """;
 
     // post process provisioning example
     File provisioningFile = new File(targetDir, "simpleConfigWithNewline.txt");
