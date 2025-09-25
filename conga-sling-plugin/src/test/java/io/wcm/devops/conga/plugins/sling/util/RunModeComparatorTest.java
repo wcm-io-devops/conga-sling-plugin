@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
 
@@ -41,7 +40,7 @@ class RunModeComparatorTest {
   private static List<String> comparedList(String... runmodes) {
     SortedSet<String> set = new TreeSet<>(new RunModeComparator());
     set.addAll(Arrays.asList(runmodes));
-    return set.stream().collect(Collectors.toList());
+    return set.stream().toList();
   }
 
 }

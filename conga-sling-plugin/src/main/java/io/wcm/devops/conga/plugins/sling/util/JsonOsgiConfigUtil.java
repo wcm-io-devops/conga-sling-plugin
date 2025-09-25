@@ -87,8 +87,7 @@ public final class JsonOsgiConfigUtil {
     for (Map.Entry<String, Object> entry : map.entrySet()) {
       String key = entry.getKey();
       Object value = entry.getValue();
-      if (value instanceof Collection) {
-        Collection<?> collection = ((Collection)value);
+      if (value instanceof Collection<?> collection) {
         value = collection.toArray((Object[])Array.newInstance(detectArrayType(collection), collection.size()));
       }
       else if (value instanceof Map) {
