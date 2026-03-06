@@ -85,16 +85,22 @@ class ProvisioningOsgiConfigPostProcessorTest {
 
     // validate repoinit statements
     config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-test.cfg.json");
-    assertArrayEquals(new String[] { """
-        create path /repoinit/test1
-        create path /repoinit/test2
-        """ }, (String[])config.get("scripts"));
+    assertArrayEquals(new String[] {
+        """
+            create path /repoinit/test1
+            create path /repoinit/test2
+            """
+    }, (String[])config.get("scripts"));
 
     config = readConfig("mode1/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1.cfg.json");
-    assertArrayEquals(new String[] { "create service user mode1\n" }, (String[])config.get("scripts"));
+    assertArrayEquals(new String[] {
+        "create service user mode1\n"
+    }, (String[])config.get("scripts"));
 
     config = readConfig("mode1.mode2/org.apache.sling.jcr.repoinit.RepositoryInitializer-test-mode1-mode2.cfg.json");
-    assertArrayEquals(new String[] { "create service user mode1_mode2" }, (String[])config.get("scripts"));
+    assertArrayEquals(new String[] {
+        "create service user mode1_mode2"
+    }, (String[])config.get("scripts"));
   }
 
   @Test
@@ -154,13 +160,13 @@ class ProvisioningOsgiConfigPostProcessorTest {
   private void postProcess(File provisioningFile) {
     // post-process
     FileContext fileContext = new FileContext()
-        .file(provisioningFile)
-        .charset(StandardCharsets.UTF_8);
+      .file(provisioningFile)
+      .charset(StandardCharsets.UTF_8);
     PluginContextOptions pluginContextOptions = new PluginContextOptions()
-        .pluginManager(new PluginManagerImpl())
-        .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
+      .pluginManager(new PluginManagerImpl())
+      .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
     PostProcessorContext context = new PostProcessorContext()
-        .pluginContextOptions(pluginContextOptions);
+      .pluginContextOptions(pluginContextOptions);
 
     assertTrue(underTest.accepts(fileContext, context));
     underTest.apply(fileContext, context);

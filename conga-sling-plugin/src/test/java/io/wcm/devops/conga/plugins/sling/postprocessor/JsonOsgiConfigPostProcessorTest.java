@@ -84,26 +84,32 @@ class JsonOsgiConfigPostProcessorTest {
 
     // validate repoinit statements
     config = readConfig("org.apache.sling.jcr.repoinit.RepositoryInitializer-sample.cfg.json");
-    assertArrayEquals(new String[] { "create path /repoinit/test1\n" +
-        "create path /repoinit/test2" }, (String[])config.get("scripts"));
+    assertArrayEquals(new String[] {
+        "create path /repoinit/test1\n" +
+            "create path /repoinit/test2"
+    }, (String[])config.get("scripts"));
 
     config = readConfig("mode1/org.apache.sling.jcr.repoinit.RepositoryInitializer-sample-mode1.cfg.json");
-    assertArrayEquals(new String[] { "create service user mode1" }, (String[])config.get("scripts"));
+    assertArrayEquals(new String[] {
+        "create service user mode1"
+    }, (String[])config.get("scripts"));
 
     config = readConfig("mode1.mode2/org.apache.sling.jcr.repoinit.RepositoryInitializer-sample-mode1-mode2.cfg.json");
-    assertArrayEquals(new String[] { "create service user mode1_mode2" }, (String[])config.get("scripts"));
+    assertArrayEquals(new String[] {
+        "create service user mode1_mode2"
+    }, (String[])config.get("scripts"));
   }
 
   private void postProcess(File provisioningFile) {
     // post-process
     FileContext fileContext = new FileContext()
-        .file(provisioningFile)
-        .charset(StandardCharsets.UTF_8);
+      .file(provisioningFile)
+      .charset(StandardCharsets.UTF_8);
     PluginContextOptions pluginContextOptions = new PluginContextOptions()
-        .pluginManager(new PluginManagerImpl())
-        .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
+      .pluginManager(new PluginManagerImpl())
+      .logger(LoggerFactory.getLogger(ProvisioningOsgiConfigPostProcessor.class));
     PostProcessorContext context = new PostProcessorContext()
-        .pluginContextOptions(pluginContextOptions);
+      .pluginContextOptions(pluginContextOptions);
 
     assertTrue(underTest.accepts(fileContext, context));
     underTest.apply(fileContext, context);

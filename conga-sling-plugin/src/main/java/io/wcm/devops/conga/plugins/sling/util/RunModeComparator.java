@@ -31,6 +31,7 @@ import org.jetbrains.annotations.Nullable;
  * However, service run modes (author, publish) are always put at the first position.
  */
 public class RunModeComparator implements Comparator<String>, Serializable {
+
   private static final long serialVersionUID = 1L;
 
   private static final Set<String> SERVICE_RUNMODES = Set.of("author", "publish");

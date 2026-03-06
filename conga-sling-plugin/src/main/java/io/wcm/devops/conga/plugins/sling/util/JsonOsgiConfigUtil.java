@@ -52,9 +52,9 @@ import io.wcm.devops.conga.plugins.sling.postprocessor.JsonOsgiConfigPostProcess
 public final class JsonOsgiConfigUtil {
 
   private static final JsonMapper OBJECT_MAPPER = JsonMapper.builder()
-      .enable(JsonParser.Feature.ALLOW_COMMENTS)
-      .enable(JsonReadFeature.ALLOW_TRAILING_COMMA)
-      .build();
+    .enable(JsonParser.Feature.ALLOW_COMMENTS)
+    .enable(JsonReadFeature.ALLOW_TRAILING_COMMA)
+    .build();
   private static final MapType MAP_TYPE = OBJECT_MAPPER.getTypeFactory().constructMapType(Map.class, String.class, Object.class);
 
   private static final Pattern KEY_PATTERN_CONFIGURATIONS = Pattern.compile("^configurations(:(.*))?$");
