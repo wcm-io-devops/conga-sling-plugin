@@ -157,7 +157,9 @@ public final class ProvisioningUtil {
         String pid = Objects.toString(feature.getName(), "conga")
             + (runModesString != null ? "-" + Strings.CS.replace(runModesString, ",", "-") : "");
         Configuration configuration = new Configuration(pid, REPOINIT_PID);
-        configuration.getProperties().put("scripts", new String[] { script });
+        configuration.getProperties().put("scripts", new String[] {
+            script
+        });
         String path = getPathForConfiguration(configuration, runMode);
         R result = consumer.accept(path, configuration.getProperties());
         if (result != null) {

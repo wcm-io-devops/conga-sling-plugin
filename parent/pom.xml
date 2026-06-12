@@ -18,41 +18,40 @@
   limitations under the License.
   #L%
   -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>io.wcm.devops</groupId>
     <artifactId>io.wcm.devops.parent_toplevel</artifactId>
-    <version>2.1.0</version>
+    <version>2.2.0</version>
     <relativePath />
   </parent>
 
   <groupId>io.wcm.devops.conga.plugins</groupId>
   <artifactId>io.wcm.devops.conga.plugins.sling.parent</artifactId>
-  <version>1.5.0</version>
+  <version>1.6.0</version>
   <packaging>pom</packaging>
 
   <name>CONGA Sling Plugin</name>
-
-  <ciManagement>
-    <system>GitHub Actions</system>
-    <url>https://github.com/wcm-io-devops/conga-sling-plugin/actions</url>
-  </ciManagement>
 
   <issueManagement>
     <system>GitHub</system>
     <url>https://github.com/wcm-io-devops/conga-sling-plugin/issues/</url>
   </issueManagement>
 
+  <ciManagement>
+    <system>GitHub Actions</system>
+    <url>https://github.com/wcm-io-devops/conga-sling-plugin/actions</url>
+  </ciManagement>
+
   <dependencyManagement>
     <dependencies>
-    
+
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>2.0.17</version>
+        <version>2.0.18</version>
       </dependency>
 
     </dependencies>

@@ -63,22 +63,21 @@ public class OsgiConfigEscapingStrategy implements EscapingStrategyPlugin {
     ESCAPE_OSGI_CONFIG_TRANSLATION.put("\f", "\\f");
     ESCAPE_OSGI_CONFIG_TRANSLATION.put("\r", "\\r");
   }
-  static final CharSequenceTranslator ESCAPE_OSGI_CONFIG =
-      new AggregateTranslator(
-          new LookupTranslator(ESCAPE_OSGI_CONFIG_TRANSLATION),
-          new CharSequenceTranslator() {
-            @Override
-            public int translate(CharSequence input, int index, Writer out) throws IOException {
-              char c = input.charAt(index);
-              if (c < ' ') {
-                String t = "000" + Integer.toHexString(c);
-                out.write("\\u" + t.substring(t.length() - 4));
-                return 1;
-              }
-              return 0;
-            }
+  static final CharSequenceTranslator ESCAPE_OSGI_CONFIG = new AggregateTranslator(
+      new LookupTranslator(ESCAPE_OSGI_CONFIG_TRANSLATION),
+      new CharSequenceTranslator() {
+
+        @Override
+        public int translate(CharSequence input, int index, Writer out) throws IOException {
+          char c = input.charAt(index);
+          if (c < ' ') {
+            String t = "000" + Integer.toHexString(c);
+            out.write("\\u" + t.substring(t.length() - 4));
+            return 1;
           }
-      );
+          return 0;
+        }
+      });
 
   @Override
   public String getName() {
